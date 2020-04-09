@@ -1,0 +1,24 @@
+.setting-bar
+        .form-container
+            .input-container
+                .api-upbit-container
+                    input.upbit-api(type="text",name="upbitapi",placeholder="Upbit API")
+                    input.upbit-secret(type="password",name="upbitsecret",placeholder="Upbit SECRET")
+                    button.upbit-btn 등록
+                .api-binance-container
+                    input.binance-api(type="text",name="binanceapi",placeholder="Binance API")
+                    input.binance-secret(type="password",name="binancesecret",placeholder="Binance SECRET")  
+                    button.binance-btn 등록
+                .api-huobi-container
+                    input.huobi-api(type="text",name="huobiapi",placeholder="Huobi API")
+                    input.huobi-secret(type="password",name="huobisecret",placeholder="Huobi SECRET")
+                    button.huobi-btn 등록
+                .btn-container
+                    button.clear-all-btn 취소
+            .setting-container
+                .set-percentage 
+                    label 상장 주시(%) 
+                    input.percentage-input(type="number" max="100" min="0" step="0.1",placeholder="0.0~100.0 값 입력")
+                    button.percentage-btn 확인
+                    button.percentage-cancel 취소
+
