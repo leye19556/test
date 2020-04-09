@@ -1,0 +1,39 @@
+.setting-bar {
+  position: fixed;
+  right: 0;
+  background: #e3e3e3;
+  z-index: 1;
+  height: 310px;
+  width: 250px;
+  border: 1px solid black;
+  border-top: 5px solid black;
+  &.hide {
+    display: none;
+  }
+  .form-container {
+    @include flex(column, center, center);
+    .input-container {
+      margin: {
+        left: 5px;
+        right: 5px;
+        top: 5px;
+      }
+      input {
+        width: 90px;
+      }
+      .clear-all-btn {
+        width: 100%;
+      }
+    }
+    .setting-container {
+      @include flex(column, center, center);
+      margin: 5px;
+      .percentage-input {
+        width: 95px;
+      }
+    }
+  }
+  label {
+    font-size: 0.6rem;
+  }
+}

@@ -1,0 +1,128 @@
+.compare-container {
+  @include flex(row, center, flex-start);
+  border-bottom: 1px solid #e3e3e3;
+  position: relative;
+  font-size: 0.7rem;
+  .first-exchange,
+  .second-exchange,
+  .compare-coin {
+    padding: 10px;
+    p {
+      text-align: center;
+    }
+  }
+  .input-container {
+    margin-left: 5px;
+    input {
+      margin-right: 5px;
+    }
+  }
+  .setting {
+    position: fixed;
+    right: 15px;
+    z-index: 5;
+    .setting-btn {
+      display: flex;
+      cursor: pointer;
+      padding: 5px;
+      border-radius: 50%;
+      box-shadow: 1px 1px 1px 1px #a5a5a5;
+    }
+  }
+}
+.base-rate {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+  font-size: 0.8rem;
+  background: #e3e3e3;
+  padding: 0px 5px;
+  border-radius: 5px;
+  font-weight: 800;
+  min-width: 500px;
+  height: 40px;
+  p {
+    padding-right: 5px;
+    margin-right: 5px;
+    border-right: 1px solid black;
+    &.btc-diff {
+      border: none;
+    }
+  }
+}
+.coin-info-container {
+  @include flex(column, none, none);
+  position: relative;
+  padding: 5px;
+  font-size: 0.9rem;
+  .coin {
+    display: flex;
+    justify-content: flex-start;
+    border-top: 1px solid $grey;
+    &:first-child {
+      border-top: none;
+    }
+    &:last-child {
+      border-bottom: 1px solid $grey;
+    }
+    p {
+      width: 13%;
+      &:first-child {
+        width: 8%;
+      }
+      &.krw {
+        font-size: 0.8rem;
+        width: 100%;
+      }
+      &.btc {
+        width: 100%;
+        margin-top: 0;
+      }
+    }
+  }
+  .info-wrapper {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    width: 200px;
+    height: 250px;
+    margin-right: 5px;
+    border: 1px solid black;
+    border-top: 5px solid black;
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    background-color: #e3e3e3;
+    &.close {
+      height: 25px;
+    }
+    .control-bar {
+      position: relative;
+      span {
+        position: absolute;
+        right: 8px;
+        margin: 5px;
+        i {
+          cursor: pointer;
+        }
+      }
+    }
+    .info-container {
+      overflow: scroll;
+      height: 100%;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    h5 {
+      margin: 5px;
+      display: inline-block;
+    }
+    .info {
+      font-size: 0.75rem;
+      margin-left: 5px;
+      word-break: break-all;
+    }
+  }
+}
