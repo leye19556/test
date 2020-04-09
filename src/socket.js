@@ -1,4 +1,5 @@
 import ccxt from "ccxt";
+import "@babel/polyfill";
 import { sendMessage, bot, chatId } from "./controllers/botController";
 import { getCoinList } from "./coinList";
 import axios from "axios";
