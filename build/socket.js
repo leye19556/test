@@ -7,6 +7,8 @@ exports["default"] = void 0;
 
 var _ccxt = _interopRequireDefault(require("ccxt"));
 
+require("@babel/polyfill");
+
 var _botController = require("./controllers/botController");
 
 var _coinList = require("./coinList");
