@@ -25,8 +25,8 @@ app.use(localMiddleware);
 app.use("/", globalRoute);
 app.use("/coin", coinRoute);
 app.use("/coins", coinsRoute);
-const server = app.listen(8989, () => {
-  console.log(`✅ express is running on port: 8989`);
+const server = app.listen(process.env.PORT || 3000, () => {
+  console.log(`✅ express is running on port:${process.env.PORT || 3000}`);
 });
 const io = socketIO(server);
 socket(io);
