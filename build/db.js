@@ -2,9 +2,13 @@
 
 var _mongoose = _interopRequireDefault(require("mongoose"));
 
+var _dotenv = _interopRequireDefault(require("dotenv"));
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-_mongoose["default"].connect("mongodb://localhost/coin_at", {
+_dotenv["default"].config();
+
+_mongoose["default"].connect(process.env.PRODUCTION ? process.env.HEROKU_DB : process.env.LOCAL_DB, {
   useNewUrlParser: true,
   useFindAndModify: false
 });
