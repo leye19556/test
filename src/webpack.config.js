@@ -49,7 +49,7 @@ const config = {
     path: OUTPUT_DIR,
     filename: "[name].js"
   },
-  plugins: [new ExtractCSS("styles.css"), "@babel/plugin-transform-runtime"]
+  plugins: [new ExtractCSS("styles.css")]
   //node: { fs: "empty" }
 };
 module.exports = config;
