@@ -33,6 +33,7 @@ export const postBinanceNotice = async (req, res, next) => {
         notice.checked = true;
         notice.save();
         //매수 작업 진행
+        console.log(`Binance ${coin} 매수`);
       }
     }
     res.end();
@@ -47,7 +48,6 @@ export const postUpbitNotice = async (req, res, next) => {
       body: { notices }
     } = req;
     for (let i = 0; i < notices.length; i++) {
-      //console.log(notices[i].notice.title);
       const symbol = notices[i].notice.title.slice(
         notices[i].notice.title.lastIndexOf(" ") + 1,
         notices[i].notice.title.length - 1
@@ -55,6 +55,7 @@ export const postUpbitNotice = async (req, res, next) => {
       const notice = await upbitNoticeModel.findOne({
         coin: symbol
       });
+      //console.log(notice);
       if (!notice) {
         await upbitNoticeModel.create({
           title: notices[i].notice.title,
@@ -64,6 +65,7 @@ export const postUpbitNotice = async (req, res, next) => {
           checked: true
         });
         //오늘 새로운 상장 코인, 코인 매수 작업 진행
+        console.log(`Upbit ${symbol} 매수`);
       }
     }
     res.end();
