@@ -2,7 +2,9 @@ import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
 import { chatId } from "./botController";
 dotenv.config();
-const token = process.env.TELEGRAM_WALLET_BOT_API;
+const token = process.env.PRODUCTION
+  ? process.env.TELEGRAM_WALLET_BOT_API
+  : process.env.LOCAL_TELEGRAM_WALLET_BOT_API;
 const bot = new TelegramBot(token, { polling: true });
 export const sendWalletNotice = msg => {
   bot.sendMessage(chatId, msg);

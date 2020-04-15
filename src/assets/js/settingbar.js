@@ -1,4 +1,4 @@
-import { setWatchPer } from "./newCoinListing";
+import { setWatchPer } from "./upbitNewCoinListing";
 
 const settingBtn = document.querySelector(".setting-btn"),
   settingBar = document.querySelector(".setting-bar"),

@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-exports.sendMessage = exports.bot = exports.chatId = void 0;
+exports.postMessage = exports.bot = exports.chatId = void 0;
 
 var _nodeTelegramBotApi = _interopRequireDefault(require("node-telegram-bot-api"));
 
@@ -11,10 +11,9 @@ var _dotenv = _interopRequireDefault(require("dotenv"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-//import { watchingCoin } from "../socket";
 _dotenv["default"].config();
 
-var token = process.env.TELEGRAM_BOT_API;
+var token = process.env.PRODUCTION ? process.env.TELEGRAM_BOT_API : process.env.LOCAL_TELEGRAM_BOT_API;
 var chatId = 1258091981;
 exports.chatId = chatId;
 var bot = new _nodeTelegramBotApi["default"](token, {
@@ -26,7 +25,22 @@ var sendMessage = function sendMessage(message, started) {
   if (started) bot.sendMessage(chatId, message);
 };
 
-exports.sendMessage = sendMessage;
+var postMessage = function postMessage(req, res, next) {
+  try {
+    var _req$body = req.body,
+        coinInfo = _req$body.coinInfo,
+        percent = _req$body.percent,
+        binance = _req$body.binance;
+    var msg = "".concat(coinInfo.symbol, "\n\uC5C5\uBE44\uD2B8:").concat(coinInfo.last, "\u20A9\n\uBC14\uC774\uB0B8\uC2A4:").concat(binance.toFixed(2), "\u20A9  (").concat(percent, "%)");
+    sendMessage(msg, true);
+    res.end();
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
+
+exports.postMessage = postMessage;
 
 var init = function init() {
   bot.onText(/\/알림설정 (.+)/, function (msg, match) {
@@ -52,6 +66,7 @@ var init = function init() {
   });
   bot.onText(/\/start/, function (msg, match) {
     var chatId = msg.chat.id;
+    console.log(chatId);
     started = true;
     bot.sendMessage(chatId, "봇 알림 시작");
   });

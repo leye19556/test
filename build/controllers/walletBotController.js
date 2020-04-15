@@ -15,7 +15,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 _dotenv["default"].config();
 
-var token = process.env.TELEGRAM_WALLET_BOT_API;
+var token = process.env.PRODUCTION ? process.env.TELEGRAM_WALLET_BOT_API : process.env.LOCAL_TELEGRAM_WALLET_BOT_API;
 var bot = new _nodeTelegramBotApi["default"](token, {
   polling: true
 });

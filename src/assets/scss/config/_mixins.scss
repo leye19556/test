@@ -4,3 +4,90 @@
   align-items: $b;
   justify-content: $c;
 }
+@mixin default-btn {
+  background-color: white;
+  color: black;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+@mixin primary-btn {
+  background-color: #3498db;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+@mixin danger-btn {
+  background-color: #e74c3c;
+  color: white;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+@mixin boxShadow {
+  box-shadow: 1px 1px 4px 0px #525252;
+}
+
+@mixin infoWrapperMobile {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 160px;
+  height: 180px;
+  margin-right: 5px;
+  border: 1px solid black;
+  border-top: 5px solid black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #e3e3e3;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+@mixin infoWrapperTablet {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  width: 180px;
+  height: 250px;
+  margin-right: 5px;
+  border: 1px solid black;
+  border-top: 5px solid black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #e3e3e3;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+@mixin infoWrapperDesktop {
+  position: fixed;
+  bottom: 0;
+  right: 0;
+  height: 250px;
+  width: 200px;
+  margin-right: 5px;
+  border: 1px solid black;
+  border-top: 5px solid black;
+  border-bottom-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  background-color: #e3e3e3;
+  overflow: hidden;
+  padding-bottom: 20px;
+}
+@mixin mobile {
+  @media (min-width: #{$breakpoint-mobile}) and (max-width: #{$breakpoint-tablet - 1px}) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: #{$breakpoint-tablet}) and (max-width: #{$breakpoint-desktop - 1px}) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: #{$breakpoint-desktop}) {
+    @content;
+  }
+}

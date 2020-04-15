@@ -1,12 +1,28 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
-//import { watchingCoin } from "../socket";
 dotenv.config();
-const token = process.env.TELEGRAM_BOT_API;
+const token = process.env.PRODUCTION
+  ? process.env.TELEGRAM_BOT_API
+  : process.env.LOCAL_TELEGRAM_BOT_API;
 export const chatId = 1258091981;
 export const bot = new TelegramBot(token, { polling: true });
-export const sendMessage = (message, started) => {
+const sendMessage = (message, started) => {
   if (started) bot.sendMessage(chatId, message);
+};
+export const postMessage = (req, res, next) => {
+  try {
+    const {
+      body: { coinInfo, percent, binance }
+    } = req;
+    const msg = `${coinInfo.symbol}\n업비트:${
+      coinInfo.last
+    }₩\n바이낸스:${binance.toFixed(2)}₩  (${percent}%)`;
+    sendMessage(msg, true);
+    res.end();
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
 };
 const init = () => {
   bot.onText(/\/알림설정 (.+)/, (msg, match) => {
@@ -33,6 +49,7 @@ const init = () => {
   });
   bot.onText(/\/start/, (msg, match) => {
     const chatId = msg.chat.id;
+    console.log(chatId);
     started = true;
     bot.sendMessage(chatId, "봇 알림 시작");
   });

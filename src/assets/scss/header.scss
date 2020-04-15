@@ -1,0 +1,24 @@
+@include mobile {
+  .header {
+    p {
+      display: inline-block;
+      margin: 5px;
+    }
+  }
+}
+@include tablet {
+  .header {
+    p {
+      display: inline-block;
+      margin: 5px;
+    }
+  }
+}
+@include desktop {
+  .header {
+    p {
+      display: inline-block;
+      margin: 5px;
+    }
+  }
+}

@@ -9,6 +9,8 @@ var _express = _interopRequireDefault(require("express"));
 
 var _coinController = require("../controllers/coinController");
 
+var _noticeController = require("../controllers/noticeController");
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var Router = _express["default"].Router();
@@ -16,5 +18,6 @@ var Router = _express["default"].Router();
 Router.get("/", _coinController.getCoin);
 Router.post("/", _coinController.postCoin);
 Router.post("/check", _coinController.checkCoin);
+Router.get("/notice", _noticeController.getBinanceNotice);
 var _default = Router;
 exports["default"] = _default;

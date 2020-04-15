@@ -1,8 +1,8 @@
 import axios from "axios";
 import moment from "moment";
-const infoWrapper = document.querySelector(".info-wrapper"),
-  infoContainer = document.querySelector(".info-container"),
-  fa = document.querySelector(".fa-minus");
+const infoWrapper = document.querySelector(".upbit-notice");
+const infoContainer = infoWrapper.querySelector(".info-container"),
+  fa = infoWrapper.querySelector(".fa-minus");
 let watchingPer = -1;
 export const setWatchPer = v => {
   watchingPer = v;
@@ -28,7 +28,7 @@ const getNewCoinUpdateInfo = async () => {
   const result = await requestNewCoinUpdateInfo();
   const coins = [];
   infoContainer.textContent = "";
-  [].forEach.call(filteringDate(result.data), v => {
+  [].forEach.call(filteringData(result.data), v => {
     const p = document.createElement("p");
     const idx1 = v.title.search(/[(]/),
       idx2 = v.title.search(/[)]/);
@@ -41,14 +41,17 @@ const getNewCoinUpdateInfo = async () => {
 
   if (coins.length > 0 && watchingPer !== -1) postCoin(coins, watchingPer);
 };
-const filteringDate = payload => {
+const filteringData = payload => {
   const { data } = payload;
-  const todaysInfo = data?.list?.filter(
+  const btcInfo = data?.list?.filter(v => v.title.includes("BTC 마켓"));
+  //console.log(btcInfo);
+  /*const todaysInfo = btcInfo?.filter(
     v =>
       moment(v.created_at).format("YYYY-MM-DD") ===
       moment().format("YYYY-MM-DD")
   );
-  return todaysInfo;
+  return todaysInfo;*/
+  return btcInfo;
 };
 const onToggleMinimize = e => {
   const { target } = e;
@@ -61,7 +64,7 @@ const onToggleMinimize = e => {
 };
 
 const init = () => {
-  setInterval(getNewCoinUpdateInfo, 2500);
+  setInterval(getNewCoinUpdateInfo, 3500);
   fa.addEventListener("click", onToggleMinimize);
 };
 init();

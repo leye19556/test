@@ -11,6 +11,16 @@ const baseSelector = document.querySelector(".base-selector"),
   alarmInput = document.querySelector(".alarm-percent-input"),
   coinSettingBtn = document.querySelector(".coin-setting-btn"),
   coinSettingCancel = document.querySelector(".coin-setting-cancel");
+
+const coinName = document.querySelector(".coin-name"),
+  coinPrice1 = document.querySelector(".coin-uprice"),
+  coinPrice2 = document.querySelector(".coin-bprice"),
+  coinDiff = document.querySelector(".coin-diff");
+let isNameSorted = false,
+  isUpbitSorted = false,
+  isBinanceSorted = false,
+  isDiffSorted = false;
+
 let timer = null;
 let base = "upbit",
   coin = "All",
@@ -82,16 +92,16 @@ export const handleCoinInfo = data => {
             binanceToKrw = document.createElement("p");
 
           li.className = `coin ${coinName}`;
-          currentCoin.className = `coin-${coinName}`;
+          currentCoin.className = `coin-${coinName} symbol`;
           //exchange.className = `exchange-${coinName}`;
           currentPrice.className = `current-${coinName}`;
           priceWithBinance.className = `price-binance-${coinName}`;
-          percentagWithBinance.className = `percentage-binance-${coinName}`;
+          percentagWithBinance.className = `percentage-binance-${coinName} diff`;
 
-          upbitToBtc.className = `btc-upbit-${coinName} btc`;
-          binanceToBtc.className = `btc-binance-${coinName} btc`;
-          upbitToKrw.className = `krw-upbit-${coinName} krw`;
-          binanceToKrw.className = `krw-binance-${coinName} krw`;
+          upbitToBtc.className = `btc-upbit-${coinName} btc u-krw`;
+          binanceToBtc.className = `btc-binance-${coinName} btc b-btc`;
+          //upbitToKrw.className = `krw-upbit-${coinName} krw upbit`;
+          binanceToKrw.className = `krw-binance-${coinName} krw b-krw`;
 
           currentCoin.innerText = coinName;
           exchange.innerText = `${i.charAt(0).toUpperCase() + i.slice(1)}`;
@@ -153,6 +163,48 @@ const getCoinInfo = () => {
     socket.emit("updateInfo", { base, symbol: coin.toUpperCase(), percent });
   }
 };
+const onSort = type => {
+  let allItem = document.querySelectorAll(".coin");
+  const coinList = [].slice.call(allItem, 1);
+  if (type === 0) {
+    coinList.sort((x, y) => {
+      const xName = x.querySelector(".symbol").innerText,
+        yName = y.querySelector(".symbol").innerText;
+      if (isNameSorted) return xName < yName ? -1 : 1;
+      else return xName < yName ? 1 : -1;
+    });
+    isNameSorted = !isNameSorted;
+  } else if (type === 1) {
+    coinList.sort((x, y) => {
+      const xPrice = parseFloat(x.querySelector(".u-krw").innerText),
+        yPrice = parseFloat(y.querySelector(".u-krw").innerText);
+      if (isUpbitSorted) return xPrice < yPrice ? -1 : 1;
+      else return xPrice < yPrice ? 1 : -1;
+    });
+    isUpbitSorted = !isUpbitSorted;
+  } else if (type === 2) {
+    coinList.sort((x, y) => {
+      const xPrice = parseFloat(x.querySelector(".b-krw").innerText),
+        yPrice = parseFloat(y.querySelector(".b-krw").innerText);
+      if (isBinanceSorted) return xPrice < yPrice ? -1 : 1;
+      else return xPrice < yPrice ? 1 : -1;
+    });
+    isBinanceSorted = !isBinanceSorted;
+  } else if (type === 3) {
+    coinList.sort((x, y) => {
+      const xDiff = parseFloat(x.querySelector(".diff").innerText),
+        yDiff = parseFloat(y.querySelector(".diff").innerText);
+      if (isDiffSorted) return xDiff < yDiff ? -1 : 1;
+      else return xDiff < yDiff ? 1 : -1;
+    });
+    isDiffSorted = !isDiffSorted;
+  }
+  allItem = [allItem[0], ...coinList];
+  coinContainer.innerHTML = "";
+  [].forEach.call(allItem, v => {
+    coinContainer.appendChild(v);
+  });
+};
 const init = () => {
   if (timer === null) timer = setInterval(getCoinInfo, SECONDS);
   if (baseSelector) baseSelector.addEventListener("change", selectBase);
@@ -161,5 +213,9 @@ const init = () => {
   if (coinSettingCancel)
     coinSettingCancel.addEventListener("click", onCoinSettingCancel);
   if (alarmInput) alarmInput.addEventListener("change", onAlarmInput);
+  if (coinName) coinName.addEventListener("click", () => onSort(0));
+  if (coinPrice1) coinPrice1.addEventListener("click", () => onSort(1));
+  if (coinPrice2) coinPrice2.addEventListener("click", () => onSort(2));
+  if (coinDiff) coinDiff.addEventListener("click", () => onSort(3));
 };
 init();

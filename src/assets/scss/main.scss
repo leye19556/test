@@ -1,99 +1,126 @@
-.compare-container {
-  @include flex(row, center, flex-start);
-  border-bottom: 1px solid #e3e3e3;
-  position: relative;
-  font-size: 0.7rem;
-  .first-exchange,
-  .second-exchange,
-  .compare-coin {
-    padding: 10px;
-    p {
-      text-align: center;
+@include mobile {
+  .compare-container {
+    @include flex(row, center, flex-start);
+    border-bottom: 1px solid #e3e3e3;
+    position: relative;
+    font-size: 0.5rem;
+    .first-exchange,
+    .second-exchange,
+    .compare-coin {
+      padding: 3px;
+      p {
+        text-align: center;
+      }
+      &.first-exchange {
+        label {
+          display: none;
+        }
+      }
+      &.compare-coin .coin-setting-btn,
+      &.compare-coin .coin-setting-cancel {
+        padding: 2px;
+        @include default-btn;
+        @include boxShadow;
+        margin-left: 2px;
+      }
+      &.compare-coin .coin-selector {
+        width: 65px;
+      }
+      &.compare-coin .alarm-percent-input {
+        width: 45px;
+      }
+    }
+    .input-container {
+      margin-left: 5px;
+      input {
+        margin-right: 5px;
+      }
+    }
+    .setting {
+      position: fixed;
+      right: 15px;
+      top: 10px;
+      z-index: 5;
+      .setting-btn {
+        display: flex;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 1px 1px 1px 1px #a5a5a5;
+      }
     }
   }
-  .input-container {
-    margin-left: 5px;
-    input {
+  .base-rate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.5rem;
+    background: #e3e3e3;
+    border-radius: 5px;
+    font-weight: 800;
+    height: 40px;
+    width: 100%;
+    text-align: center;
+    p {
+      padding-right: 5px;
       margin-right: 5px;
+      border-right: 1px solid black;
+      &.btc-diff {
+        border: none;
+      }
     }
   }
-  .setting {
-    position: fixed;
-    right: 15px;
-    z-index: 5;
-    .setting-btn {
-      display: flex;
+  .coin-info-container {
+    @include flex(column, none, none);
+    position: relative;
+    padding: 5px;
+    font-size: 0.5rem;
+    .coin-head {
       cursor: pointer;
-      padding: 5px;
-      border-radius: 50%;
-      box-shadow: 1px 1px 1px 1px #a5a5a5;
+      font-weight: 800;
     }
-  }
-}
-.base-rate {
-  display: inline-flex;
-  align-items: center;
-  justify-content: flex-start;
-  font-size: 0.8rem;
-  background: #e3e3e3;
-  padding: 0px 5px;
-  border-radius: 5px;
-  font-weight: 800;
-  min-width: 500px;
-  height: 40px;
-  p {
-    padding-right: 5px;
-    margin-right: 5px;
-    border-right: 1px solid black;
-    &.btc-diff {
-      border: none;
-    }
-  }
-}
-.coin-info-container {
-  @include flex(column, none, none);
-  position: relative;
-  padding: 5px;
-  font-size: 0.9rem;
-  .coin {
-    display: flex;
-    justify-content: flex-start;
-    border-top: 1px solid $grey;
-    &:first-child {
-      border-top: none;
-    }
-    &:last-child {
-      border-bottom: 1px solid $grey;
-    }
-    p {
-      width: 13%;
+    .coin {
+      display: flex;
+      justify-content: flex-start;
+      border-top: 1px solid $grey;
       &:first-child {
-        width: 8%;
+        border-top: none;
       }
-      &.krw {
-        font-size: 0.8rem;
-        width: 100%;
+      &:last-child {
+        border-bottom: 1px solid $grey;
       }
-      &.btc {
-        width: 100%;
-        margin-top: 0;
+      p {
+        width: 10%;
+        margin-right: 5px;
+        word-break: break-word;
+        &:first-child {
+          width: 7%;
+        }
+        &.krw {
+          font-size: 0.5rem;
+          width: 100%;
+          word-break: break-all;
+        }
+        &.btc {
+          width: 100%;
+          margin-top: 0;
+          word-break: break-all;
+        }
       }
     }
   }
   .info-wrapper {
-    position: fixed;
-    bottom: 0;
-    right: 0;
-    width: 200px;
-    height: 250px;
-    margin-right: 5px;
-    border: 1px solid black;
-    border-top: 5px solid black;
-    border-bottom-left-radius: 5px;
-    border-bottom-right-radius: 5px;
-    background-color: #e3e3e3;
+    @include infoWrapperMobile;
+    &.binance-notice {
+      right: 170px;
+      .info {
+        display: block;
+        text-decoration: none;
+        color: black;
+      }
+    }
     &.close {
-      height: 25px;
+      height: 5px;
     }
     .control-bar {
       position: relative;
@@ -121,6 +148,278 @@
     }
     .info {
       font-size: 0.75rem;
+      margin-left: 5px;
+      word-break: break-all;
+    }
+  }
+}
+@include tablet {
+  .compare-container {
+    @include flex(row, center, flex-start);
+    border-bottom: 1px solid #e3e3e3;
+    position: relative;
+    font-size: 0.7rem;
+    .first-exchange,
+    .second-exchange,
+    .compare-coin {
+      padding: 10px;
+      p {
+        text-align: center;
+      }
+    }
+    .input-container {
+      margin-left: 5px;
+      input {
+        margin-right: 5px;
+      }
+    }
+    .setting {
+      position: fixed;
+      right: 15px;
+      top: 15px;
+      z-index: 5;
+      .setting-btn {
+        display: flex;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 1px 1px 1px 1px #a5a5a5;
+      }
+    }
+  }
+  .base-rate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    background: #e3e3e3;
+    padding: 0px 5px;
+    border-radius: 5px;
+    font-weight: 800;
+    min-width: 500px;
+    height: 40px;
+    p {
+      padding-right: 5px;
+      margin-right: 5px;
+      border-right: 1px solid black;
+      &.btc-diff {
+        border: none;
+      }
+    }
+  }
+  .coin-info-container {
+    @include flex(column, none, none);
+    position: relative;
+    padding: 5px;
+    font-size: 0.9rem;
+    .coin-head {
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .coin {
+      display: flex;
+      justify-content: flex-start;
+      border-top: 1px solid $grey;
+      &:first-child {
+        border-top: none;
+      }
+      &:last-child {
+        border-bottom: 1px solid $grey;
+      }
+      p {
+        width: 12%;
+        font-size: 0.8rem;
+        &:first-child {
+          width: 8%;
+        }
+        &.krw {
+          font-size: 0.8rem;
+          width: 100%;
+        }
+        &.btc {
+          width: 100%;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .info-wrapper {
+    @include infoWrapperTablet;
+    &.binance-notice {
+      right: 185px;
+      .info {
+        display: block;
+        text-decoration: none;
+        color: black;
+      }
+    }
+    &.close {
+      height: 5px;
+    }
+    .control-bar {
+      position: relative;
+      span {
+        position: absolute;
+        right: 8px;
+        margin: 5px;
+        i {
+          cursor: pointer;
+        }
+      }
+    }
+    .info-container {
+      overflow: scroll;
+      height: 100%;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    h5 {
+      margin: 5px;
+      display: inline-block;
+    }
+    .info {
+      font-size: 0.75rem;
+      margin-left: 5px;
+      word-break: break-all;
+    }
+  }
+}
+@include desktop {
+  .compare-container {
+    @include flex(row, center, flex-start);
+    border-bottom: 1px solid #e3e3e3;
+    position: relative;
+    font-size: 0.7rem;
+    .first-exchange,
+    .second-exchange,
+    .compare-coin {
+      padding: 10px;
+      p {
+        text-align: center;
+      }
+    }
+    .input-container {
+      margin-left: 5px;
+      input {
+        margin-right: 5px;
+      }
+    }
+    .setting {
+      position: fixed;
+      right: 15px;
+      top: 15px;
+      z-index: 5;
+      .setting-btn {
+        display: flex;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        box-shadow: 1px 1px 1px 1px #a5a5a5;
+      }
+    }
+  }
+  .base-rate {
+    display: inline-flex;
+    align-items: center;
+    justify-content: flex-start;
+    font-size: 0.8rem;
+    background: #e3e3e3;
+    padding: 0px 5px;
+    border-radius: 5px;
+    font-weight: 800;
+    min-width: 500px;
+    height: 40px;
+    p {
+      padding-right: 5px;
+      margin-right: 5px;
+      border-right: 1px solid black;
+      &.btc-diff {
+        border: none;
+      }
+    }
+  }
+  .coin-info-container {
+    @include flex(column, none, none);
+    position: relative;
+    padding: 5px;
+    font-size: 0.9rem;
+    .coin-head {
+      cursor: pointer;
+      font-weight: 800;
+    }
+    .coin {
+      display: flex;
+      justify-content: flex-start;
+      border-top: 1px solid $grey;
+      &:first-child {
+        border-top: none;
+      }
+      &:last-child {
+        border-bottom: 1px solid $grey;
+      }
+      p {
+        width: 9%;
+        &:first-child {
+          width: 8%;
+        }
+        &.krw {
+          font-size: 0.8rem;
+          width: 100%;
+        }
+        &.btc {
+          width: 100%;
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  .info-wrapper {
+    @include infoWrapperDesktop;
+    &.binance-notice {
+      right: 210px;
+      .info {
+        display: block;
+        text-decoration: none;
+        color: black;
+      }
+    }
+    &.upbit-notice {
+      .info {
+        display: block;
+      }
+    }
+    &.close {
+      height: 5px;
+    }
+    .control-bar {
+      position: relative;
+      span {
+        position: absolute;
+        right: 8px;
+        margin: 5px;
+        i {
+          cursor: pointer;
+        }
+      }
+    }
+    .info-container {
+      overflow: scroll;
+      height: 100%;
+      -ms-overflow-style: none; /* IE and Edge */
+      scrollbar-width: none;
+      &::-webkit-scrollbar {
+        display: none;
+      }
+    }
+    h5 {
+      margin: 5px;
+      display: inline-block;
+    }
+    .info {
+      font-size: 0.7rem;
       margin-left: 5px;
       word-break: break-all;
     }
