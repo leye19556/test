@@ -19,5 +19,7 @@ Router.get("/", _coinController.getCoin);
 Router.post("/", _coinController.postCoin);
 Router.post("/check", _coinController.checkCoin);
 Router.get("/notice", _noticeController.getBinanceNotice);
+Router.post("/notice/binance", _noticeController.postBinanceNotice);
+Router.post("/notice/upbit", _noticeController.postUpbitNotice);
 var _default = Router;
 exports["default"] = _default;

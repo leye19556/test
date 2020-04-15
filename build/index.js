@@ -12,13 +12,7 @@ var _morgan = _interopRequireDefault(require("morgan"));
 
 var _dotenv = _interopRequireDefault(require("dotenv"));
 
-var _socket = _interopRequireDefault(require("socket.io"));
-
-var _socket2 = _interopRequireDefault(require("./socket"));
-
 require("./db");
-
-var _middlewares = require("./middlewares");
 
 var _globalRoute = _interopRequireDefault(require("./routes/globalRoute"));
 
@@ -30,6 +24,9 @@ var _botRoute = _interopRequireDefault(require("./routes/botRoute"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
+//import socketIO from "socket.io";
+//import socket from "./socket";
+//import { localMiddleware } from "./middlewares";
 _dotenv["default"].config();
 
 var app = (0, _express["default"])();
@@ -42,14 +39,13 @@ app.use("/static", _express["default"]["static"](_path["default"].join(__dirname
 app.use(_express["default"].json());
 app.use(_express["default"].urlencoded({
   extended: true
-}));
-app.use(_middlewares.localMiddleware);
+})); //app.use(localMiddleware);
+
 app.use("/", _globalRoute["default"]);
 app.use("/coin", _coinRoute["default"]);
 app.use("/coins", _coinsRoute["default"]);
 app.use("/bot", _botRoute["default"]);
-var server = app.listen(process.env.PORT || 3000, function () {
+app.listen(process.env.PORT || 3000, function () {
   console.log("\u2705 express is running on port:".concat(process.env.PORT || 3000));
-});
-var io = (0, _socket["default"])(server);
-(0, _socket2["default"])(io);
+}); //const io = socketIO(server);
+//socket(io);

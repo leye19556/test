@@ -12,7 +12,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 var Router = _express["default"].Router();
 
 Router.get("/", function (req, res, next) {
-  //res.render("home");
   res.send("CoinAT api");
 });
 var _default = Router;

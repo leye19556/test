@@ -1,7 +1,7 @@
 import coinModel from "../models/coinModel";
-import Binance from "node-binance-api";
+//import Binance from "node-binance-api";
 import axios from "axios";
-const getUpbitTickers = coins => {
+/*const getUpbitTickers = coins => {
   let symbols = "";
   for (let i = 0; i < coins.length; i++) {
     if (i < coins.length - 1) {
@@ -46,7 +46,7 @@ export const postCoin = async (req, res, next) => {
   } catch (e) {
     next(e);
   }
-};
+};*/
 
 export const checkCoin = async (req, res, next) => {
   try {

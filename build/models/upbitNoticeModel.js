@@ -9,7 +9,7 @@ var _mongoose = _interopRequireDefault(require("mongoose"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
-var binanceNoticeSchema = new _mongoose["default"].Schema({
+var upbitNoticeSchema = new _mongoose["default"].Schema({
   title: {
     type: String,
     required: "title is required"
@@ -20,11 +20,7 @@ var binanceNoticeSchema = new _mongoose["default"].Schema({
   },
   link: {
     type: String,
-    required: "link is required"
-  },
-  checked: {
-    type: Boolean,
-    "default": false
+    "default": null
   },
   updatedAt: {
     type: String,
@@ -36,7 +32,7 @@ var binanceNoticeSchema = new _mongoose["default"].Schema({
   }
 });
 
-var binanceNoticeModel = _mongoose["default"].model("BinanceNotice", binanceNoticeSchema);
+var upbitNoticeModel = _mongoose["default"].model("UpbitNotice", upbitNoticeSchema);
 
-var _default = binanceNoticeModel;
+var _default = upbitNoticeModel;
 exports["default"] = _default;
