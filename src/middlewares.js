@@ -1,5 +1,6 @@
 import moment from "moment";
 import ccxt from "ccxt";
+import "@babel/polyfill";
 export const getCoinNames = async (type = 0) => {
   const binance = new ccxt.binance(),
     huobi = new ccxt.huobipro(),

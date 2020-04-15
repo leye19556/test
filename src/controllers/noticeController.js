@@ -1,6 +1,7 @@
 import moment from "moment";
 import binanceNoticeModel from "../models/binanceNoticeModel";
 import upbitNoticeModel from "../models/upbitNoticeModel";
+import "@babel/polyfill";
 export const getBinanceNotice = async (req, res, next) => {
   try {
     const notices = await binanceNoticeModel.find();

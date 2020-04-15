@@ -12,6 +12,7 @@ import globalRoute from "./routes/globalRoute";
 import coinRoute from "./routes/coinRoute";
 import coinsRoute from "./routes/coinsRoute";
 import botRoute from "./routes/botRoute";
+import "@babel/polyfill";
 dotenv.config();
 const app = express();
 app.set("view engine", "pug");
