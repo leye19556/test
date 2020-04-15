@@ -24,6 +24,7 @@ export const postMessage = (req, res, next) => {
     next(e);
   }
 };
+/*
 const init = () => {
   bot.onText(/\/알림설정 (.+)/, (msg, match) => {
     const chatId = msg.chat.id;
@@ -72,3 +73,4 @@ const init = () => {
   });
 };
 init();
+*/

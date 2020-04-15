@@ -1,6 +1,6 @@
-import coinModel from "../models/coinModel";
+//import coinModel from "../models/coinModel";
 //import Binance from "node-binance-api";
-import axios from "axios";
+//import axios from "axios";
 /*const getUpbitTickers = coins => {
   let symbols = "";
   for (let i = 0; i < coins.length; i++) {
