@@ -1,0 +1,23 @@
+.form-container {
+  padding-bottom: 5px;
+  border-bottom: 1px solid black;
+  input[type="text"] {
+    background: #eaeaea;
+    border-top-left-radius: 10px;
+    border-bottom-left-radius: 10px;
+    border: none;
+    padding: 6px;
+    font-size: 0.8rem;
+  }
+  input[type="submit"] {
+    border: none;
+    padding: 5px;
+    margin-left: 5px;
+    background: #86b0dc;
+    color: white;
+    font-weight: 800;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    cursor: pointer;
+  }
+}

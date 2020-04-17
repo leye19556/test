@@ -1,0 +1,14 @@
+extends ./layout/layout
+block content
+    h4 코인리스트 관리
+    form.form-container(action="/coin" method="post")
+        input(type="text" name="name" placeholder="코인 이름" required)
+        input(type="submit" value="추가")
+    ul.coin-container
+        each coin in coins
+            li.coin
+                p #{coin.name}
+                p #{moment(coin.createdAt).format("YYYY-MM-DD HH:MM:SS")}
+                p.delete_coin
+                    span.delete_btn ❌
+                

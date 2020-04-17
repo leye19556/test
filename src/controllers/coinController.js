@@ -1,57 +1,50 @@
-//import coinModel from "../models/coinModel";
-//import Binance from "node-binance-api";
-//import axios from "axios";
-/*const getUpbitTickers = coins => {
-  let symbols = "";
-  for (let i = 0; i < coins.length; i++) {
-    if (i < coins.length - 1) {
-      symbols += `BTC-${coins[i].toUpperCase()},`;
-    } else {
-      symbols += `BTC-${coins[i].toUpperCase()}`;
-    }
-  }
-  return axios.get(`https://api.upbit.com/v1/ticker?markets=${symbols}`);
-};
+import coinModel from "../models/coinModel";
 
-export const getCoin = async (req, res, next) => {
+export const postCoin = async (req, res, next) => {
   try {
     const {
-      query: { id }
+      body: { name },
     } = req;
-    const coin = await coinModel.findById(id);
-    res.json(coin);
+    const coin = await coinModel.findOne({
+      name,
+    });
+    if (coin)
+      res.status(404).json({ success: 0, msg: "코인이 이미 존재합니다" });
+    await coinModel.create({
+      name,
+    });
+    res.redirect("/admin");
   } catch (e) {
     console.error(e);
     next(e);
   }
 };
-export const postCoin = async (req, res, next) => {
+export const deleteCoin = async (req, res, next) => {
   try {
     const {
-      body: { coins }
+      body: { name },
     } = req;
-    const newCoins = [];
-    [].forEach.call(coins, async name => {
-      if (name !== null && name !== undefined) {
-        const coin = await coinModel.findOne({
-          name
-        });
-        if (!coin) {
-          await coinModel.create({ name });
-          newCoins.push(name);
-        }
-      }
+    console.log(name);
+    const coin = await coinModel.findOne({
+      name,
     });
-    res.json(newCoins);
+    if (!coin)
+      res
+        .status(404)
+        .json({ error: 1, msg: "코인이름이 db에 존재하지 않습니다" });
+    await coinModel.deleteOne({
+      name,
+    });
+    res.status(200).json({ error: 0, msg: "삭제 완료" });
   } catch (e) {
+    console.error(e);
     next(e);
   }
-};*/
-
+};
 export const checkCoin = async (req, res, next) => {
   try {
     const {
-      body: { coins }
+      body: { coins },
     } = req;
     res.end();
   } catch (e) {

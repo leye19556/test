@@ -1,15 +1,14 @@
 import express from "express";
-//import { postCoin, getCoin, checkCoin } from "../controllers/coinController";
 import {
   getBinanceNotice,
   postBinanceNotice,
-  postUpbitNotice
+  postUpbitNotice,
 } from "../controllers/noticeController";
+import { postCoin, deleteCoin } from "../controllers/coinController";
 
 const Router = express.Router();
-//Router.get("/", getCoin);
-//Router.post("/", postCoin);
-//Router.post("/check", checkCoin);
+Router.post("/", postCoin);
+Router.delete("/", deleteCoin);
 Router.get("/notice", getBinanceNotice);
 Router.post("/notice/binance", postBinanceNotice);
 Router.post("/notice/upbit", postUpbitNotice);

@@ -1,0 +1,22 @@
+.coin-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0px;
+  .coin {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    width: 100%;
+    p {
+      width: 33%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+    }
+    span {
+      cursor: pointer;
+    }
+  }
+}
