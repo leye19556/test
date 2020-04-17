@@ -1,17 +1,27 @@
 import coinModel from "../models/coinModel";
 
+export const getCoins = async (req, res, next) => {
+  try {
+    const coins = await coinModel.find().sort({ name: 1 });
+    res.json(coins);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
 export const postCoin = async (req, res, next) => {
   try {
     const {
       body: { name },
     } = req;
+    const coinName = name.toUpperCase();
     const coin = await coinModel.findOne({
-      name,
+      name: coinName,
     });
     if (coin)
       res.status(404).json({ success: 0, msg: "코인이 이미 존재합니다" });
     await coinModel.create({
-      name,
+      name: coinName,
     });
     res.redirect("/admin");
   } catch (e) {

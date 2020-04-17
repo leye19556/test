@@ -4,9 +4,10 @@ import {
   postBinanceNotice,
   postUpbitNotice,
 } from "../controllers/noticeController";
-import { postCoin, deleteCoin } from "../controllers/coinController";
+import { postCoin, deleteCoin, getCoins } from "../controllers/coinController";
 
 const Router = express.Router();
+Router.get("/", getCoins);
 Router.post("/", postCoin);
 Router.delete("/", deleteCoin);
 Router.get("/notice", getBinanceNotice);
