@@ -8,10 +8,11 @@
     border: none;
     padding: 6px;
     font-size: 0.8rem;
+    width: 200px;
   }
   input[type="submit"] {
     border: none;
-    padding: 5px;
+    padding: 6px;
     margin-left: 5px;
     background: #86b0dc;
     color: white;
@@ -19,5 +20,6 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     cursor: pointer;
+    width: 45px;
   }
 }

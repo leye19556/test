@@ -8,8 +8,9 @@ block content
     ul.coin-container
         each coin in coins
             li.coin
-                p #{coin.name}
-                p #{moment(coin.createdAt).format("YYYY-MM-DD HH:MM:SS")}
+                p.coin-name 
+                    span #{coin.name}
+                p.coin-time #{moment(coin.createdAt).format("YYYY-MM-DD HH:MM:SS")}
                 p.delete_coin
                     span.delete_btn ❌
                 
