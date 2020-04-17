@@ -632,7 +632,8 @@
     border: none;
     padding: 6px;
     font-size: 0.8rem;
-    width: 200px; }
+    width: 200px;
+    height: 20px; }
   .form-container input[type="submit"] {
     border: none;
     padding: 6px;
@@ -643,7 +644,8 @@
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
     cursor: pointer;
-    width: 45px; }
+    width: 45px;
+    height: 30px; }
 
 .coin-container {
   display: flex;
