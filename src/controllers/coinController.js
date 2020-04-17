@@ -18,8 +18,11 @@ export const postCoin = async (req, res, next) => {
     const coin = await coinModel.findOne({
       name: coinName,
     });
-    if (coin)
-      res.status(404).json({ success: 0, msg: "코인이 이미 존재합니다" });
+    if (coin) {
+      return res
+        .status(404)
+        .json({ success: 0, msg: "코인이 이미 존재합니다" });
+    }
     await coinModel.create({
       name: coinName,
     });
