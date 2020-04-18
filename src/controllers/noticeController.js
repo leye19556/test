@@ -12,6 +12,7 @@ export const getBinanceNotice = async (req, res, next) => {
         item.checked === false
       ) {
         item.checked = true;
+        item.save();
         newNotice.push({ notice: item });
         return { new: true, notice: item };
       } else {
@@ -23,7 +24,6 @@ export const getBinanceNotice = async (req, res, next) => {
         console.log(`${newNotice[i].coin} 매수 진행`);
       }
     }
-    notices.save();
     res.json(checkNewNotices);
   } catch (e) {
     console.error(e);
