@@ -5,14 +5,25 @@ import "@babel/polyfill";
 export const getBinanceNotice = async (req, res, next) => {
   try {
     const notices = await binanceNoticeModel.find().sort({ updatedAt: -1 });
+    const newNotice = [];
     const checkNewNotices = notices.map((item) => {
       if (
         item.updatedAt === moment().format("YYYY/MM/DD") &&
         item.checked === false
-      )
+      ) {
+        item.checked = true;
+        newNotice.push({ notice: item });
         return { new: true, notice: item };
-      else return { new: false, notice: item };
+      } else {
+        return { new: false, notice: item };
+      }
     });
+    if (newNotice.length > 0) {
+      for (let i = 0; i < newNotice.length; i++) {
+        console.log(`${newNotice[i].coin} 매수 진행`);
+      }
+    }
+    notices.save();
     res.json(checkNewNotices);
   } catch (e) {
     console.error(e);
