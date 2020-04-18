@@ -4,8 +4,8 @@ import upbitNoticeModel from "../models/upbitNoticeModel";
 import "@babel/polyfill";
 export const getBinanceNotice = async (req, res, next) => {
   try {
-    const notices = await binanceNoticeModel.find();
-    const checkNewNotices = notices.map(item => {
+    const notices = await binanceNoticeModel.find().sort({ updatedAt: -1 });
+    const checkNewNotices = notices.map((item) => {
       if (
         item.updatedAt === moment().format("YYYY/MM/DD") &&
         item.checked === false
@@ -23,11 +23,11 @@ export const getBinanceNotice = async (req, res, next) => {
 export const postBinanceNotice = async (req, res, next) => {
   try {
     const {
-      body: { notices }
+      body: { notices },
     } = req;
     for (let i = 0; i < notices.length; i++) {
       const notice = await binanceNoticeModel.findOne({
-        title: notices[i].notice.title
+        title: notices[i].notice.title,
       });
       if (notice.checked === false) {
         const coin = notice.coin; //매수할 코인
@@ -46,7 +46,7 @@ export const postBinanceNotice = async (req, res, next) => {
 export const postUpbitNotice = async (req, res, next) => {
   try {
     const {
-      body: { notices }
+      body: { notices },
     } = req;
     for (let i = 0; i < notices.length; i++) {
       const symbol = notices[i].notice.title.slice(
@@ -54,7 +54,7 @@ export const postUpbitNotice = async (req, res, next) => {
         notices[i].notice.title.length - 1
       );
       const notice = await upbitNoticeModel.findOne({
-        coin: symbol
+        coin: symbol,
       });
       //console.log(notice);
       if (!notice) {
@@ -63,7 +63,7 @@ export const postUpbitNotice = async (req, res, next) => {
           coin: symbol,
           updatedAt: notices[i].notice.updated_at,
           createdAt: notices[i].notice.created_at,
-          checked: true
+          checked: true,
         });
         //오늘 새로운 상장 코인, 코인 매수 작업 진행
         console.log(`Upbit ${symbol} 매수`);
