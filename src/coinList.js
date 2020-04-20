@@ -41,7 +41,7 @@ const btcCoinList = [
   "XRP/BTC",
   "XZC/BTC",
   "ZEN/BTC",
-  "ZRX/BTC"
+  "ZRX/BTC",
 ];
 const krwCoinList = [
   "ADA/KRW",
@@ -130,14 +130,5 @@ const krwCoinList = [
   "XLM/KRW",
   "XRP/KRW",
   "ZIL/KRW",
-  "ZRX/KRW"
+  "ZRX/KRW",
 ];
-export const getCoinList = () => {
-  const btcList = btcCoinList.map(v => v.slice(0, v.indexOf("/")));
-  const krwList = krwCoinList.map(v => v.slice(0, v.indexOf("/")));
-  const coinList = krwList.filter(v => btcList.includes(v));
-  return {
-    btc: coinList.map(v => `${v}/BTC`),
-    krw: coinList.map(v => `${v}/KRW`)
-  };
-};
