@@ -4,7 +4,7 @@ dotenv.config();
 const token = process.env.PRODUCTION
   ? process.env.TELEGRAM_BOT_API
   : process.env.LOCAL_TELEGRAM_BOT_API;
-export const chatId = [1258091981, 401733277];
+export const chatId = [1258091981];
 export const bot = new TelegramBot(token, { polling: true });
 const sendMessage = (message, started) => {
   if (started) {
@@ -16,9 +16,9 @@ const sendMessage = (message, started) => {
 export const postMessage = (req, res, next) => {
   try {
     const {
-      body: { coinInfo, percent, binance },
+      body: { coinInfo },
     } = req;
-    const msg = `${coinInfo.symbol}\n업비트:${coinInfo.last}₩\n바이낸스:${binance}₩  (${percent}%)`;
+    let msg = `${coinInfo.symbol} 업비트:${coinInfo.upbit}₩ 바이낸스:${coinInfo.binance}₩  (${coinInfo.percent}%)\n`;
     sendMessage(msg, true);
     res.end();
   } catch (e) {
@@ -26,7 +26,16 @@ export const postMessage = (req, res, next) => {
     next(e);
   }
 };
-
+export const postCancelMessage = (req, res, next) => {
+  try {
+    let msg = `-----알림 취소-----\n`;
+    sendMessage(msg, true);
+    res.end();
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
 const init = () => {
   /*bot.onText(/\/알림설정 (.+)/, (msg, match) => {
     const chatId = msg.chat.id;

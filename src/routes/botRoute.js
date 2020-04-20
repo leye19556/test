@@ -1,7 +1,7 @@
 import express from "express";
-import { postMessage } from "../controllers/botController";
+import { postMessage, postCancelMessage } from "../controllers/botController";
 
 const app = express.Router();
 app.post("/", postMessage);
-
+app.post("/cancel", postCancelMessage);
 export default app;
