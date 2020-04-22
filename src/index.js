@@ -11,6 +11,7 @@ import coinRoute from "./routes/coinRoute";
 import coinsRoute from "./routes/coinsRoute";
 import botRoute from "./routes/botRoute";
 import adminRoute from "./routes/adminRoute";
+import tradeRoute from "./routes/tradeRoute";
 import "@babel/polyfill";
 dotenv.config();
 const app = express();
@@ -29,6 +30,7 @@ app.use("/", globalRoute);
 app.use("/coin", coinRoute);
 app.use("/coins", coinsRoute);
 app.use("/bot", botRoute);
+app.use("/trade", tradeRoute);
 app.use("/admin", adminRoute);
 app.listen(process.env.PORT || 3000, () => {
   console.log(`✅ express is running on port:${process.env.PORT || 3000}`);
