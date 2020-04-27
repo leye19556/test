@@ -79,7 +79,7 @@ export const postUpbitNotice = async (req, res, next) => {
         });
         //오늘 새로운 상장 코인, 코인 매수 작업 진행
         //console.log(`Upbit ${symbol} 매수`);
-        sendMessage(`업비트 업데이트: ${title}`, true);
+        sendMessage(`업비트 업데이트: ${notices[i].notice.title}`, true);
       }
     }
     res.end();
