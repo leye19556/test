@@ -6,7 +6,7 @@ const token = process.env.PRODUCTION
   : process.env.LOCAL_TELEGRAM_BOT_API;
 export const chatId = [1258091981, 401733277];
 export const bot = new TelegramBot(token, { polling: true });
-const sendMessage = (message, started) => {
+export const sendMessage = (message, started) => {
   if (started) {
     [].forEach.call(chatId, (id) => {
       bot.sendMessage(id, message);

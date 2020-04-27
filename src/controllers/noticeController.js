@@ -2,6 +2,7 @@ import moment from "moment";
 import binanceNoticeModel from "../models/binanceNoticeModel";
 import upbitNoticeModel from "../models/upbitNoticeModel";
 import "@babel/polyfill";
+import { sendMessage } from "./botController";
 export const getBinanceNotice = async (req, res, next) => {
   try {
     const notices = await binanceNoticeModel.find().sort({ updatedAt: -1 });
@@ -45,7 +46,8 @@ export const postBinanceNotice = async (req, res, next) => {
         notice.checked = true;
         notice.save();
         //매수 작업 진행
-        console.log(`Binance ${coin} 매수`);
+        //console.log(`Binance ${coin} 매수`);
+        sendMessage(`바이낸스: ${notices[i].notice.title}`, true);
       }
     }
     res.end();
@@ -67,7 +69,6 @@ export const postUpbitNotice = async (req, res, next) => {
       const notice = await upbitNoticeModel.findOne({
         coin: symbol,
       });
-      //console.log(notice);
       if (!notice) {
         await upbitNoticeModel.create({
           title: notices[i].notice.title,
@@ -77,7 +78,8 @@ export const postUpbitNotice = async (req, res, next) => {
           checked: true,
         });
         //오늘 새로운 상장 코인, 코인 매수 작업 진행
-        console.log(`Upbit ${symbol} 매수`);
+        //console.log(`Upbit ${symbol} 매수`);
+        sendMessage(`업비트 업데이트: ${title}`, true);
       }
     }
     res.end();
