@@ -9,7 +9,11 @@ export const bot = new TelegramBot(token, { polling: true });
 export const sendMessage = (message, started) => {
   if (started) {
     [].forEach.call(chatId, (id) => {
-      bot.sendMessage(id, message);
+      try {
+        bot.sendMessage(id, message);
+      } catch (e) {
+        console.log("error");
+      }
     });
   }
 };
