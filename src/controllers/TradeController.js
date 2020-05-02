@@ -18,28 +18,57 @@ const BINANCE_API =
   "9Z02YXaX43ad1JLg1ZkETbpLH3mEhcmQ5BtToNGTFCNbpWPDYEawBwirk6esQsOl";
 const BINANCE_SEC =
   "fGSmq5Xux2rnQhxOROcSRqyzZrzyYm25ipZltqrmmm1wfnHRLxWbyJWsAaRCodwe";
-const binanceTrade = async (symbol, side) => {
+const checkTradable = async (symbol, type, q) => {
+  const b = await axios.get(
+    `https://api.binance.com/api/v3/ticker/bookTicker?symbol=${symbol}BTC`
+  );
+  const u = await axios.get(
+    `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
+  );
+  if (type === "ask") {
+    const bidQty = parseFloat(b.data.bidQty, 10),
+      askQty = parseFloat(u.data[0].orderbook_units[0].ask_size, 10);
+    if (bidQty >= q && askQty >= q) return true;
+  } else if (type === "bid") {
+    const askQty = parseFloat(b.data.askQty, 10),
+      bidQty = parseFloat(u.data[0].orderbook_units[0].bid_size, 10);
+    if (askQty >= q && bidQty >= q) return true;
+  }
+  return false;
+};
+const getUpbitBidPrice = async (symbol) => {
+  const { data } = await axios.get(
+    `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
+  );
+  const info = data[0].orderbook_units[0];
+  return { price: info.bid_price, quantity: info.bid_size };
+};
+const binanceTrade = async (symbol, side, q) => {
   const binance = new Binance({
     APIKEY: BINANCE_API,
     APISECRET: BINANCE_SEC,
   });
   if (side === "ask") {
-    binance.marketSell(`${symbol}BTC`, 1, (e, response) => {
-      console.info("Market Buy response", response);
-      console.info("order id: " + response.orderId);
+    binance.marketSell(`${symbol}BTC`, q, (err, response) => {
+      if (err && err.body) {
+        console.log(err.body);
+      } else {
+        console.info("Market Buy response", response);
+        console.info("order id: " + response.orderId);
+      }
     });
   } else if (side === "bid") {
-    binance.marketBuy(`${symbol}BTC`, 1, (e, response) => {
-      console.info("Market Buy response", response);
-      console.info("order id: " + response.orderId);
+    binance.marketBuy(`${symbol}BTC`, q, (err, response) => {
+      if (err && err.body) {
+        console.log(err.body);
+      } else {
+        console.info("Market Buy response", response);
+        console.info("order id: " + response.orderId);
+      }
     });
   }
 };
-const upbitTrade = async (symbol, side, price) => {
-  const result = await axios.get(
-    `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
-  );
-
+const upbitTrade = async (symbol, side, q) => {
   let body = {
     market: `KRW-${symbol}`,
     side,
@@ -47,11 +76,13 @@ const upbitTrade = async (symbol, side, price) => {
   if (side === "ask") {
     //sell
     body.price = null;
-    body.volume = 1000 / price;
+    body.volume = q;
     body.ord_type = "market";
   } else if (side === "bid") {
     //buy
-    body.price = 1000;
+    const bidInfo = await getUpbitBidPrice(symbol);
+    console.log(bidInfo.price * q);
+    body.price = bidInfo.price * q;
     body.volume = null;
     body.ord_type = "price";
   }
@@ -79,11 +110,15 @@ const upbitTrade = async (symbol, side, price) => {
 export const upbitBidBinanceAsk = async (req, res, next) => {
   try {
     const {
-      body: { symbol, upbitPrice, binancePrice },
+      body: { symbol, q },
     } = req;
-    await upbitTrade(symbol, "bid");
-    await binanceTrade(symbol, "ask");
-
+    if (checkTradable(symbol, "bid", q)) {
+      //console.log("업비트 bid 바이낸스 ask");
+      Promise.all([
+        await upbitTrade(symbol, "bid", q),
+        await binanceTrade(symbol, "ask", q),
+      ]);
+    }
     res.end();
   } catch (e) {
     console.error(e);
@@ -93,10 +128,15 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
 export const binanceBidUpbitAsk = async (req, res, next) => {
   try {
     const {
-      body: { symbol, upbitPrice, binancePrice },
+      body: { symbol, q },
     } = req;
-    await upbitTrade(symbol, "ask", upbitPrice);
-    await binanceTrade(symbol, "bid");
+    if (checkTradable(symbol, "ask", q)) {
+      //console.log("업비트 ask 바이낸스 bid");
+      Promise.all([
+        await upbitTrade(symbol, "ask", q),
+        await binanceTrade(symbol, "bid", q),
+      ]);
+    }
     res.end();
   } catch (e) {
     console.error(e);

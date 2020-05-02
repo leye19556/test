@@ -10,9 +10,73 @@ Express,MongoDB,JavaScript
 - 코인 리스트 관리 링크 및 기능 제공 ✅
 - 코인 매수, 매도
 
-### 에러 참고
+### mongodb collections
+
+- coinModel
 
 ```
-보유하고 있지 않은 가상화폐에 대해 매도 주문을 넣는 경우 다음과 같이 에러 메시지가 저장된 튜플 객체가 리턴됨
-({'error': {'message': '주문가능한 금액(XRP)이 부족합니다.', 'name': 'insufficient_funds_ask'}})
+  name: {
+    type: String,
+    required: "name is required",
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now(),
+  },
 ```
+
+- upbitNoticeModel
+
+```
+  title: {
+    type: String,
+    required: "title is required"
+  },
+  coin: {
+    type: String,
+    required: "coin is required"
+  },
+  link: {
+    type: String,
+    default: null
+  },
+  updatedAt: {
+    type: String,
+    required: "updatedAt is required"
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
+```
+
+- binanceNoticeModel
+
+```
+  title: {
+    type: String,
+    required: "title is required"
+  },
+  coin: {
+    type: String,
+    required: "coin is required"
+  },
+  link: {
+    type: String,
+    required: "link is required"
+  },
+  checked: {
+    type: Boolean,
+    default: false
+  },
+  updatedAt: {
+    type: String,
+    required: "updatedAt is required"
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  }
+```
+
+###

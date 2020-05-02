@@ -3,6 +3,15 @@ import binanceNoticeModel from "../models/binanceNoticeModel";
 import upbitNoticeModel from "../models/upbitNoticeModel";
 import "@babel/polyfill";
 import { sendMessage } from "./botController";
+export const getUpbitNotice = async (req, res, next) => {
+  try {
+    const notices = await upbitNoticeModel.find().sort({ updatedAt: -1 });
+    res.json(notices);
+  } catch (e) {
+    console.error(e);
+    next(e);
+  }
+};
 export const getBinanceNotice = async (req, res, next) => {
   try {
     const notices = await binanceNoticeModel.find().sort({ updatedAt: -1 });
