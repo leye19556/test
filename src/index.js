@@ -12,6 +12,7 @@ import coinsRoute from "./routes/coinsRoute";
 import botRoute from "./routes/botRoute";
 import adminRoute from "./routes/adminRoute";
 import tradeRoute from "./routes/tradeRoute";
+import "./notice";
 import "@babel/polyfill";
 dotenv.config();
 const app = express();
