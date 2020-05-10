@@ -1,5 +1,3 @@
-//매수:bid:sell 매도:ask:buy
-import ccxt from "ccxt";
 import request from "request";
 import { v4 } from "uuid";
 import crypto from "crypto";

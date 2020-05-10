@@ -79,4 +79,15 @@ Express,MongoDB,JavaScript
   }
 ```
 
-###
+### 설치
+
+```
+npm install
+```
+
+### 실행
+
+```
+npm run dev:server
+npm run dev:assets
+```
