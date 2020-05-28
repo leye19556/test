@@ -8,7 +8,7 @@ Express,MongoDB,JavaScript
 - 상장 코인 공지 ✅
 - 시세알림 봇 실행 ✅
 - 코인 리스트 관리 링크 및 기능 제공 ✅
-- 코인 매수, 매도
+- 코인 매수, 매도 (거래 진행 가능 하지만 수정 필요)
 
 ### mongodb collections
 
