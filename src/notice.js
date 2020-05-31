@@ -5,7 +5,7 @@ import {
   binanceTrade,
   checkBinancePrice,
   checkBinanceLatestPrice,
-  getBalance,
+  getBinanceBalance,
 } from "./controllers/TradeController";
 let timer = null;
 //새 코인 공지시 코인 구매 진행
@@ -39,7 +39,7 @@ const upbitListing = async () => {
         askQty,
       } = await checkBinanceLatestPrice(symbol);
       //await checkBinancePrice(symbol, "ask");
-      let balance = await getBalance(),
+      let balance = await getBinanceBalance(),
         limitPrice = parseFloat(
           (parseFloat(askPrice) * 0.02 + parseFloat(askPrice)).toFixed(8)
         );
@@ -59,18 +59,18 @@ const upbitListing = async () => {
         const { askPrice: price, askQty: qty } = await checkBinanceLatestPrice(
           symbol
         );
-        balance = await getBalance(); //BTC 잔액 확인
+        balance = await getBinanceBalance(); //BTC 잔액 확인
         if (
           //2% 범위에 포함되는지 체크, 총량을 매수가능한지 지갑 체크
           parseFloat(price) <= limitPrice &&
-          parseFloat(balance.BTC.available) >= askPrice * askQty
+          parseFloat(balance.BTC.available) >= price * qty
         ) {
           //코인 해당 매도가 전량 매수
-          console.log(`총 가격:${askPrice * askQty}BTC, ${askQty}개 매수 시도`);
-          binanceTrade(symbol, "bid", askQty);
+          console.log(`총 가격:${price * qty}BTC, ${qty}개 매수 시도`);
+          binanceTrade(symbol, "bid", qty);
         } else {
           let msg = `바이낸스 ${symbol}매수 취소:`;
-          if (parseFloat(balance.BTC.available) < askPrice * askQty) {
+          if (parseFloat(balance.BTC.available) < price * qty) {
             msg += `BTC 잔액 부족`;
           }
           sendMessage(msg, true);
