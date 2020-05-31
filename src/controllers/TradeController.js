@@ -119,7 +119,7 @@ const checkTradable = async (symbol, type, q) => {
     type === "ask"
       ? upbitBalance.data.filter((coin) => coin.currency === symbol)[0]
       : upbitBalance.data.filter((coin) => coin.currency === "KRW")[0];
-  console.log(upbitCoinInfo);
+  //console.log(upbitBalance);
   //console.log(binanceBalance);  console.log(upbitBalance.data);
   if (type === "ask") {
     //upbit ask,  binance bid
@@ -128,11 +128,9 @@ const checkTradable = async (symbol, type, q) => {
     if (bidQty >= q && askQty >= q) {
       console.log(1);
       if (
-        parseFloat(binanceBalance.BTC.available) *
-          parseFloat(b.data.askPrice) >=
+        parseFloat(binanceBalance.BTC.available) >=
           parseFloat(b.data.askPrice) * q &&
-        parseFloat(upbitCoinInfo.balance) >=
-          parseFloat(u.data[0].orderbook_units[0].bid_price) * q
+        parseFloat(upbitCoinInfo.balance) >= q
       ) {
         console.log("거래");
         return true;
@@ -244,10 +242,10 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
     // console.log(await checkTradable(symbol, "bid", q));
     if ((await checkTradable(symbol, "bid", q)) === true) {
       console.log("업비트 bid 바이낸스 ask");
-      Promise.all([
+      /*Promise.all([
         await upbitTrade(symbol, "bid", q),
         await binanceTrade(symbol, "ask", q),
-      ]);
+      ]);*/
       res.json({ error: 0 });
     } else {
       //거래 취소
@@ -270,10 +268,10 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
     //console.log(await checkTradable(symbol, "ask", q));
     if ((await checkTradable(symbol, "ask", q)) === true) {
       console.log("업비트 ask 바이낸스 bid");
-      Promise.all([
+      /*Promise.all([
         await upbitTrade(symbol, "ask", q),
         await binanceTrade(symbol, "bid", q),
-      ]);
+      ]);*/
       res.json({ error: 0 });
     } else {
       //거래 취소

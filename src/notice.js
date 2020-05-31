@@ -3,7 +3,6 @@ import { sendMessage } from "./controllers/botController";
 import upbitNoticeModel from "./models/upbitNoticeModel";
 import {
   binanceTrade,
-  checkBinancePrice,
   checkBinanceLatestPrice,
   getBinanceBalance,
 } from "./controllers/TradeController";
@@ -48,13 +47,13 @@ const upbitListing = async () => {
         true
       );
       //binance에서 구매 진행
-      console.log(
+      /*console.log(
         balance.BTC.available,
         askPrice,
         askQty,
         limitPrice,
         askPrice * askQty
-      );
+      );*/
       while (true) {
         const { askPrice: price, askQty: qty } = await checkBinanceLatestPrice(
           symbol
@@ -66,7 +65,8 @@ const upbitListing = async () => {
           parseFloat(balance.BTC.available) >= price * qty
         ) {
           //코인 해당 매도가 전량 매수
-          console.log(`총 가격:${price * qty}BTC, ${qty}개 매수 시도`);
+          //console.log(`총 가격:${price * qty}BTC, ${qty}개 매수 진행`);
+          sendMessage(`총 가격:${price * qty}BTC, ${qty}개 매수 진행`, true);
           binanceTrade(symbol, "bid", qty);
         } else {
           let msg = `바이낸스 ${symbol}매수 취소:`;
