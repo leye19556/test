@@ -12,8 +12,7 @@ Express,MongoDB,JavaScript
 
 ```
 Binance의 경우 BTC를 제외한 다른 코인들을 BTC로 전환해줘야된다.
-Upbit의 경우 역시 비슷합니다. KRW를 제외한 코인들을 KRW로 전환해준다.
-
+Upbit의 경우 역시 비슷. KRW를 제외한 코인들을 KRW로 전환해준다.
 -> 현재 보류량 * Price(bidPrice or askPrice) >=  Qty*Price 인 경우 거래 진행
 ```
 

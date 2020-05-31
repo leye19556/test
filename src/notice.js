@@ -5,6 +5,7 @@ import {
   binanceTrade,
   checkBinanceLatestPrice,
   getBinanceBalance,
+  apik,
 } from "./controllers/TradeController";
 let timer = null;
 //새 코인 공지시 코인 구매 진행
@@ -14,6 +15,7 @@ const upbitListing = async () => {
   } = await axios.get(
     "https://api-manager.upbit.com/api/v1/notices/search?search=%5B%EA%B1%B0%EB%9E%98%5D&page=1&per_page=20&before=&target=non_ios&thread_name=general"
   );
+  //console.log(apik);
   const notices = data.list;
   for (let i = 0; i < notices.length; i++) {
     const symbol = notices[i].title.slice(
