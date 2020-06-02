@@ -11,18 +11,44 @@ import { sendMessage } from "./botController";
  * 적을 거래 취소, 거래 코인은 여러개 설정할수 있게,
  * upbit는 krw, 바이낸스는 btc
  */
-//const UPBIT_API = "22bb6xhjM7YndAsQ84TYEOD071DWhyCoxrASRWSR";
-//const UPBIT_SEC = "sctWwG494PzxglGGs78MxtIWkcmWhO7RtNeoy7le";
-//const BINANCE_API =
-//"9Z02YXaX43ad1JLg1ZkETbpLH3mEhcmQ5BtToNGTFCNbpWPDYEawBwirk6esQsOl";
-//const BINANCE_SEC =
-//"fGSmq5Xux2rnQhxOROcSRqyzZrzyYm25ipZltqrmmm1wfnHRLxWbyJWsAaRCodwe";
+
 let UPBIT_API = null,
   UPBIT_SEC = null,
   BINANCE_API = null,
   BINANCE_SEC = null,
   binance = null;
 let flag = 1;
+
+export const postBinanceKey = (req, res, next) => {
+  try {
+    const {
+      body: { api, sec },
+    } = req;
+    BINANCE_API = api;
+    BINANCE_SEC = sec;
+    binance = new Binance({
+      APIKEY: api,
+      APISECRET: sec,
+    });
+    console.log(api, sec, binance === null);
+    res.end();
+  } catch (e) {
+    next(e);
+  }
+};
+export const postUpbitKey = (req, res, next) => {
+  try {
+    const {
+      body: { api, sec },
+    } = req;
+    UPBIT_API = api;
+    UPBIT_SEC = sec;
+    res.end();
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const getUpbitBalance = async () => {
   const payload = {
     access_key: UPBIT_API,
@@ -120,7 +146,6 @@ const checkTradable = async (symbol, type, q) => {
     type === "ask"
       ? upbitBalance.data.filter((coin) => coin.currency === symbol)[0]
       : upbitBalance.data.filter((coin) => coin.currency === "KRW")[0];
-  //console.log(upbitBalance);
   //console.log(binanceBalance);  console.log(upbitBalance.data);
   if (type === "ask") {
     //upbit ask,  binance bid
@@ -240,7 +265,7 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
     const {
       body: { symbol, q, api1, api2, sec1, sec2 },
     } = req;
-    if (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
+    /* (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
       UPBIT_API = api1;
       UPBIT_SEC = sec1;
     }
@@ -251,7 +276,7 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
         APIKEY: BINANCE_API,
         APISECRET: BINANCE_SEC,
       });
-    }
+    }*/
     if ((await checkTradable(symbol, "bid", q)) === true) {
       //console.log("업비트 bid 바이낸스 ask");
       /*Promise.all([
@@ -278,7 +303,7 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
       body: { symbol, q, api1, sec1, api2, sec2 },
     } = req;
     console.log(api1, sec1, api2, sec2);
-    if (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
+    /*if (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
       UPBIT_API = api1;
       UPBIT_SEC = sec1;
     }
@@ -289,7 +314,7 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
         APIKEY: api2,
         APISECRET: sec2,
       });
-    }
+    }*/
     //console.log(api1, sec1, api2, sec2);
     if ((await checkTradable(symbol, "ask", q)) === true) {
       //console.log("업비트 ask 바이낸스 bid");
