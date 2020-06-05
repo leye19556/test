@@ -5,7 +5,6 @@ import {
   binanceTrade,
   checkBinanceLatestPrice,
   getBinanceBalance,
-  apik,
 } from "./controllers/TradeController";
 let timer = null;
 //새 코인 공지시 코인 구매 진행
