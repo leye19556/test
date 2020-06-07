@@ -1,5 +1,5 @@
 import coinModel from "../models/coinModel";
-
+import axios from "axios";
 export const getCoins = async (req, res, next) => {
   try {
     const coins = await coinModel.find().sort({ name: 1 });
@@ -62,6 +62,17 @@ export const checkCoin = async (req, res, next) => {
     res.end();
   } catch (e) {
     console.error(e);
+    next(e);
+  }
+};
+export const getCurrency = async (req, res, next) => {
+  try {
+    const { data } = await axios.get(
+      "https://www.freeforexapi.com/api/live?pairs=USDKRW"
+    );
+    res.json(data);
+  } catch (e) {
+    console.log(e);
     next(e);
   }
 };

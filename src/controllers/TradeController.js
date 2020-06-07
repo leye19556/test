@@ -30,7 +30,7 @@ export const postBinanceKey = (req, res, next) => {
       APIKEY: api,
       APISECRET: sec,
     });
-    console.log(api, sec, binance === null);
+    //console.log(api, sec, binance === null);
     res.end();
   } catch (e) {
     next(e);
@@ -43,6 +43,7 @@ export const postUpbitKey = (req, res, next) => {
     } = req;
     UPBIT_API = api;
     UPBIT_SEC = sec;
+    //console.log(api, sec);
     res.end();
   } catch (e) {
     next(e);
@@ -50,6 +51,7 @@ export const postUpbitKey = (req, res, next) => {
 };
 
 export const getUpbitBalance = async () => {
+  //console.log("api", UPBIT_API, UPBIT_SEC);
   const payload = {
     access_key: UPBIT_API,
     nonce: v4(),
@@ -62,6 +64,7 @@ export const getUpbitBalance = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
+  //console.log("up:", r);
   return r;
 };
 export const getBinanceBalance = async () => {
@@ -84,11 +87,18 @@ export const checkBinancePrice = async (symbol, type) => {
   }
   return obj;
 };
-export const checkBinanceLatestPrice = (symbol) => {
+export const checkLatestPrice = async (symbol, from) => {
   let obj = {};
-  obj = binance.bookTickers(`${symbol}BTC`);
+  if (from === "binance") {
+    obj = binance.bookTickers(`${symbol}BTC`);
+  } else if (from === "upbit") {
+    obj = await axios(
+      `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
+    );
+  }
   return obj;
 };
+
 const orderChange = async () => {
   const body = {
     market: "KRW-OST",
@@ -146,7 +156,7 @@ const checkTradable = async (symbol, type, q) => {
     type === "ask"
       ? upbitBalance.data.filter((coin) => coin.currency === symbol)[0]
       : upbitBalance.data.filter((coin) => coin.currency === "KRW")[0];
-  //console.log(binanceBalance);  console.log(upbitBalance.data);
+  //console.log(upbitCoinInfo);
   if (type === "ask") {
     //upbit ask,  binance bid
     const bidQty = parseFloat(b.data.askQty, 10),
@@ -154,6 +164,7 @@ const checkTradable = async (symbol, type, q) => {
     if (bidQty >= q && askQty >= q) {
       console.log(1);
       if (
+        upbitCoinInfo !== undefined &&
         parseFloat(binanceBalance.BTC.available) >=
           parseFloat(b.data.askPrice) * q &&
         parseFloat(upbitCoinInfo.balance) >= q
@@ -198,6 +209,7 @@ export const binanceTrade = async (symbol, side, q) => {
       } else {
         console.info("Market Buy response", response);
         console.info("order id: " + response.orderId);
+        sendMessage(JSON.stringify(response), true);
       }
     });
   } else if (side === "bid") {
@@ -208,6 +220,7 @@ export const binanceTrade = async (symbol, side, q) => {
       } else {
         console.info("Market Buy response", response);
         console.info("order id: " + response.orderId);
+        sendMessage(JSON.stringify(response), true);
       }
     });
   }
@@ -248,11 +261,23 @@ export const upbitTrade = async (symbol, side, q) => {
   };
 
   try {
+    /*const response = await axios.post(
+      "https://api.upbit.com/v1/orders",
+      {
+        body,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );*/
     request(options, (error, response, body) => {
       if (error) {
         throw new Error(error);
       }
       console.log(body);
+      sendMessage(JSON.stringify(body), true);
     });
   } catch (e) {
     console.log(e);
@@ -263,30 +288,17 @@ export const upbitTrade = async (symbol, side, q) => {
 export const upbitBidBinanceAsk = async (req, res, next) => {
   try {
     const {
-      body: { symbol, q, api1, api2, sec1, sec2 },
+      body: { symbol, q },
     } = req;
-    /* (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
-      UPBIT_API = api1;
-      UPBIT_SEC = sec1;
-    }
-    if (BINANCE_API !== api2 && BINANCE_SEC !== sec2) {
-      BINANCE_API = api2;
-      BINANCE_SEC = sec2;
-      binance = new Binance({
-        APIKEY: BINANCE_API,
-        APISECRET: BINANCE_SEC,
-      });
-    }*/
     if ((await checkTradable(symbol, "bid", q)) === true) {
-      //console.log("업비트 bid 바이낸스 ask");
-      /*Promise.all([
+      console.log("업비트 bid 바이낸스 ask");
+      Promise.all([
         await upbitTrade(symbol, "bid", q),
         await binanceTrade(symbol, "ask", q),
-      ]);*/
+      ]);
       res.json({ error: 0 });
     } else {
       //거래 취소
-      console.log("취");
       sendMessage(`${symbol} volumn:${q} 거래 취소`, true);
       res.json({ error: 1 });
     }
@@ -300,28 +312,14 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
 export const binanceBidUpbitAsk = async (req, res, next) => {
   try {
     const {
-      body: { symbol, q, api1, sec1, api2, sec2 },
+      body: { symbol, q },
     } = req;
-    console.log(api1, sec1, api2, sec2);
-    /*if (UPBIT_API !== api1 && UPBIT_SEC !== sec1) {
-      UPBIT_API = api1;
-      UPBIT_SEC = sec1;
-    }
-    if (BINANCE_API !== api2 && BINANCE_SEC !== sec2) {
-      BINANCE_API = api2;
-      BINANCE_SEC = sec2;
-      binance = new Binance({
-        APIKEY: api2,
-        APISECRET: sec2,
-      });
-    }*/
-    //console.log(api1, sec1, api2, sec2);
     if ((await checkTradable(symbol, "ask", q)) === true) {
-      //console.log("업비트 ask 바이낸스 bid");
-      /*Promise.all([
+      console.log("업비트 ask 바이낸스 bid");
+      Promise.all([
         await upbitTrade(symbol, "ask", q),
         await binanceTrade(symbol, "bid", q),
-      ]);*/
+      ]);
       res.json({ error: 0 });
     } else {
       //거래 취소
