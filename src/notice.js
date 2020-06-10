@@ -18,6 +18,7 @@ const upbitListing = async () => {
   );
   //console.log(apik);
   const notices = data.list;
+  //console.log(notices);
   for (let i = 0; i < notices.length; i++) {
     const symbol = notices[i].title.slice(
       notices[i].title.lastIndexOf(" ") + 1,
@@ -26,6 +27,7 @@ const upbitListing = async () => {
     const notice = await upbitNoticeModel.findOne({
       coin: symbol,
     });
+    console.log(symbol, notices[i]);
     if (!notice) {
       await upbitNoticeModel.create({
         title: notices[i].title,
@@ -93,3 +95,4 @@ const upbitListing = async () => {
   }
   timer = setTimeout(upbitListing, 2000);
 };
+timer = setTimeout(upbitListing, 2000);
