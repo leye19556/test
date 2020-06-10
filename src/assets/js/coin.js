@@ -20,6 +20,10 @@ const onDelete = async (e) => {
     window.location.reload();
   }
 };
+const onEdit = async (e) => {
+  const { target, currentTarget } = e;
+  console.log(target, currentTarget);
+};
 const init = () => {
   if (deletBtns) {
     [].forEach.call(deletBtns, (btn) => {

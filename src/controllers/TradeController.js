@@ -19,6 +19,14 @@ let UPBIT_API = null,
   binance = null;
 let flag = 1;
 
+export const checkExistOnBinance = async (symbol) => {
+  const c = await binance.bookTickers();
+  if (
+    Object.entries(c).filter((coin) => coin[0] === `${symbol}BTC`).length === 0
+  )
+    return false;
+  return true;
+};
 export const postBinanceKey = (req, res, next) => {
   try {
     const {
