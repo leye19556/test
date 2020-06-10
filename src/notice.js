@@ -88,4 +88,4 @@ const upbitListing = async () => {
   }
   timer = setTimeout(upbitListing, 2000);
 };
-timer = setTimeout(upbitListing, 2000);
+//timer = setTimeout(upbitListing, 2000);

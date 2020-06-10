@@ -3,6 +3,7 @@ import axios from "axios";
 export const getCoins = async (req, res, next) => {
   try {
     const coins = await coinModel.find().sort({ name: 1 });
+    //console.log(coins);
     res.json(coins);
   } catch (e) {
     console.error(e);
@@ -37,7 +38,6 @@ export const deleteCoin = async (req, res, next) => {
     const {
       body: { name },
     } = req;
-    console.log(name);
     const coin = await coinModel.findOne({
       name,
     });
