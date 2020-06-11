@@ -327,10 +327,10 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
     } = req;
     if ((await checkTradable(symbol, "bid", q)) === true) {
       console.log("업비트 bid 바이낸스 ask");
-      /*Promise.all([
+      Promise.all([
         await upbitTrade(symbol, "bid", q),
         await binanceTrade(symbol, "ask", q),
-      ]);*/
+      ]);
       res.json({ error: 0 });
     } else {
       //거래 취소
@@ -351,10 +351,10 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
     } = req;
     if ((await checkTradable(symbol, "ask", q)) === true) {
       console.log("업비트 ask 바이낸스 bid");
-      /*Promise.all([
+      Promise.all([
         await upbitTrade(symbol, "ask", q),
         await binanceTrade(symbol, "bid", q),
-      ]);*/
+      ]);
       res.json({ error: 0 });
     } else {
       //거래 취소
