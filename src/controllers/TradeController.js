@@ -17,6 +17,7 @@ let UPBIT_API = null,
   BINANCE_API = null,
   BINANCE_SEC = null,
   binance = null;
+const userList = {};
 let flag = 1;
 
 export const checkExistOnBinance = async (symbol) => {
@@ -26,6 +27,34 @@ export const checkExistOnBinance = async (symbol) => {
   )
     return false;
   return true;
+};
+export const postKey = async (req, res, next) => {
+  try {
+    const {
+      body: { api1, sec1, api2, sec2, type, uid },
+    } = req;
+    console.log(req.body);
+    console.log(userList);
+    if (type === "cancel") {
+      delete userList[uid];
+    } else {
+      UPBIT_API = api1;
+      UPBIT_SEC = sec1;
+      BINANCE_API = api2;
+      BINANCE_SEC = sec2;
+      binance = new Binance({
+        APIKEY: api2,
+        APISECRET: sec2,
+      });
+      userList[uid] = {
+        UPBIT: { UPBIT_API, UPBIT_SEC },
+        BINANCE: { BINANCE_API, BINANCE_SEC, binance },
+      };
+    }
+    res.end();
+  } catch (e) {
+    next(e);
+  }
 };
 export const postBinanceKey = (req, res, next) => {
   try {
@@ -38,7 +67,6 @@ export const postBinanceKey = (req, res, next) => {
       APIKEY: api,
       APISECRET: sec,
     });
-    //console.log(api, sec, binance === null);
     res.end();
   } catch (e) {
     next(e);
@@ -72,7 +100,6 @@ export const getUpbitBalance = async () => {
       Authorization: `Bearer ${token}`,
     },
   });
-  //console.log("up:", r);
   return r;
 };
 export const getBinanceBalance = async () => {
@@ -300,10 +327,10 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
     } = req;
     if ((await checkTradable(symbol, "bid", q)) === true) {
       console.log("업비트 bid 바이낸스 ask");
-      Promise.all([
+      /*Promise.all([
         await upbitTrade(symbol, "bid", q),
         await binanceTrade(symbol, "ask", q),
-      ]);
+      ]);*/
       res.json({ error: 0 });
     } else {
       //거래 취소
@@ -324,10 +351,10 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
     } = req;
     if ((await checkTradable(symbol, "ask", q)) === true) {
       console.log("업비트 ask 바이낸스 bid");
-      Promise.all([
+      /*Promise.all([
         await upbitTrade(symbol, "ask", q),
         await binanceTrade(symbol, "bid", q),
-      ]);
+      ]);*/
       res.json({ error: 0 });
     } else {
       //거래 취소

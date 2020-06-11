@@ -54,6 +54,16 @@ export const deleteCoin = async (req, res, next) => {
     next(e);
   }
 };
+export const editCoin = async (req, res, next) => {
+  try {
+    const {
+      body: { _id, name },
+    } = req;
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const checkCoin = async (req, res, next) => {
   try {
     const {
