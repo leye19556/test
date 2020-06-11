@@ -9,12 +9,14 @@ import {
   deleteCoin,
   getCoins,
   getCurrency,
+  editCoin,
 } from "../controllers/coinController";
 
 const Router = express.Router();
 Router.get("/", getCoins);
 Router.post("/", postCoin);
 Router.delete("/", deleteCoin);
+Router.put("/", editCoin);
 Router.get("/notice/upbit", getUpbitNotice);
 Router.get("/notice/binance", getBinanceNotice);
 Router.post("/notice/binance", postBinanceNotice);

@@ -8,9 +8,12 @@ block content
     ul.coin-container
         each coin in coins
             li.coin
-                p.coin-name 
+                p.coin-name(id=`${coin._id}`) 
                     span #{coin.name}
+                    input.edit-input(value=`${coin.name}`)
                 p.coin-time #{moment(coin.createdAt).format("YYYY-MM-DD HH:MM:SS")}
+                p.edit-coin 
+                    span.edit-btn(data-id=coin._id) 수정 
                 p.delete_coin
                     span.delete_btn ❌
                 

@@ -38,17 +38,19 @@ export const deleteCoin = async (req, res, next) => {
     const {
       body: { name },
     } = req;
-    const coin = await coinModel.findOne({
-      name,
+    const coin = await coinModel.findOneAndDelete({
+      name: name.trim(),
     });
-    if (!coin)
+    console.log(coin);
+    if (!coin) {
       res
         .status(404)
         .json({ error: 1, msg: "코인이름이 db에 존재하지 않습니다" });
-    await coinModel.deleteOne({
-      name,
-    });
-    res.status(200).json({ error: 0, msg: "삭제 완료" });
+    } else {
+      //console.log(name.trim());
+      //res.redirect("/admin");
+      res.status(200).json({ error: 0, msg: "삭제 완료" });
+    }
   } catch (e) {
     console.error(e);
     next(e);
@@ -57,8 +59,10 @@ export const deleteCoin = async (req, res, next) => {
 export const editCoin = async (req, res, next) => {
   try {
     const {
-      body: { _id, name },
+      body: { id, name },
     } = req;
+    await coinModel.findByIdAndUpdate(id, { name });
+    res.status(200).json();
   } catch (e) {
     next(e);
   }
