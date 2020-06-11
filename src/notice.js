@@ -6,6 +6,7 @@ import {
   checkLatestPrice,
   getBinanceBalance,
   checkExistOnBinance,
+  binance,
 } from "./controllers/TradeController";
 let timer = null;
 //새 코인 공지시 코인 구매 진행
@@ -25,8 +26,10 @@ const upbitListing = async () => {
     const notice = await upbitNoticeModel.findOne({
       coin: symbol,
     });
+
     //console.log(symbol, notices[i]);
     if (!notice) {
+      //console.log("create");
       await upbitNoticeModel.create({
         title: notices[i].title,
         coin: symbol,
@@ -34,55 +37,57 @@ const upbitListing = async () => {
         createdAt: notices[i].created_at,
         checked: true,
       });
-      if (checkExistOnBinance(symbol) === true) {
-        const { bidPrice, bidQty, askPrice, askQty } = await checkLatestPrice(
-          symbol,
-          "binance"
-        );
-        //await checkBinancePrice(symbol, "ask");
-        let balance = await getBinanceBalance(),
-          limitPrice = parseFloat(
-            (parseFloat(askPrice) * 0.02 + parseFloat(askPrice)).toFixed(8)
+      if (binance) {
+        if ((await checkExistOnBinance(symbol)) === true) {
+          const { bidPrice, bidQty, askPrice, askQty } = await checkLatestPrice(
+            symbol,
+            "binance"
           );
-        sendMessage(
-          `업비트 업데이트: ${notices[i].title}\n[바이낸스] ${symbol}매수 시도`,
-          true
-        );
-        //binance에서 구매 진행
-        /*console.log(
+          //console.log(askPrice);
+          let balance = await getBinanceBalance(),
+            limitPrice = parseFloat(
+              (parseFloat(askPrice) * 0.02 + parseFloat(askPrice)).toFixed(8)
+            );
+          sendMessage(
+            `업비트 업데이트: ${notices[i].title}\n[바이낸스] ${symbol}매수 시도`,
+            true
+          );
+          //binance에서 구매 진행
+          /*console.log(
         balance.BTC.available,
         askPrice,
         askQty,
         limitPrice,
         askPrice * askQty
       );*/
-        while (true) {
-          const { askPrice: price, askQty: qty } = await checkLatestPrice(
-            symbol,
-            "binance"
-          );
-          balance = await getBinanceBalance(); //BTC 잔액 확인
-          if (
-            //2% 범위에 포함되는지 체크, 총량을 매수가능한지 지갑 체크
-            parseFloat(price) <= limitPrice &&
-            parseFloat(balance.BTC.available) >= price * qty
-          ) {
-            //코인 해당 매도가 전량 매수
-            //console.log(`총 가격:${price * qty}BTC, ${qty}개 매수 진행`);
-            sendMessage(
-              `바이낸스 ${symbol} 총 가격:${
-                price * qty
-              }BTC, ${qty}개 매수 진행`,
-              true
+          while (true) {
+            const { askPrice: price, askQty: qty } = await checkLatestPrice(
+              symbol,
+              "binance"
             );
-            binanceTrade(symbol, "bid", qty);
-          } else {
-            let msg = `바이낸스 ${symbol}매수 종료`;
-            if (parseFloat(balance.BTC.available) < price * qty) {
-              msg = `바이낸스 BTC 잔액 부족 ${symbol} 매수 취소`;
+            balance = await getBinanceBalance(); //BTC 잔액 확인
+            if (
+              //2% 범위에 포함되는지 체크, 총량을 매수가능한지 지갑 체크
+              parseFloat(price) <= limitPrice &&
+              parseFloat(balance.BTC.available) >= price * qty
+            ) {
+              //코인 해당 매도가 전량 매수
+              //console.log(`총 가격:${price * qty}BTC, ${qty}개 매수 진행`);
+              sendMessage(
+                `바이낸스 ${symbol} 총 가격:${
+                  price * qty
+                }BTC, ${qty}개 매수 진행`,
+                true
+              );
+              binanceTrade(symbol, "bid", qty);
+            } else {
+              let msg = `바이낸스 ${symbol}매수 종료`;
+              if (parseFloat(balance.BTC.available) < price * qty) {
+                msg = `바이낸스 BTC 잔액 부족 ${symbol} 매수 취소`;
+              }
+              sendMessage(msg, true);
+              break;
             }
-            sendMessage(msg, true);
-            break;
           }
         }
       }
@@ -91,6 +96,6 @@ const upbitListing = async () => {
   if (timer) {
     clearTimeout(timer);
   }
-  timer = setTimeout(upbitListing, 2000);
+  timer = setTimeout(upbitListing, 2500);
 };
-timer = setTimeout(upbitListing, 2000);
+timer = setTimeout(upbitListing, 2500);

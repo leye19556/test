@@ -15,8 +15,8 @@ import { sendMessage } from "./botController";
 let UPBIT_API = null,
   UPBIT_SEC = null,
   BINANCE_API = null,
-  BINANCE_SEC = null,
-  binance = null;
+  BINANCE_SEC = null;
+export let binance = null;
 const userList = {};
 let flag = 1;
 
@@ -33,8 +33,8 @@ export const postKey = async (req, res, next) => {
     const {
       body: { api1, sec1, api2, sec2, type, uid },
     } = req;
-    console.log(req.body);
-    console.log(userList);
+    //console.log(req.body);
+    //console.log(userList);
     if (type === "cancel") {
       delete userList[uid];
     } else {
@@ -125,13 +125,22 @@ export const checkBinancePrice = async (symbol, type) => {
 export const checkLatestPrice = async (symbol, from) => {
   let obj = {};
   if (from === "binance") {
-    obj = binance.bookTickers(`${symbol}BTC`);
+    try {
+      obj = await binance.bookTickers(`${symbol}BTC`);
+      return obj;
+    } catch (e) {
+      console.log(e);
+    }
   } else if (from === "upbit") {
-    obj = await axios(
-      `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
-    );
+    try {
+      obj = await axios(
+        `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
+      );
+      return obj;
+    } catch (e) {
+      console.log(e);
+    }
   }
-  return obj;
 };
 
 const orderChange = async () => {
@@ -325,7 +334,13 @@ export const upbitBidBinanceAsk = async (req, res, next) => {
     const {
       body: { symbol, q },
     } = req;
-    if ((await checkTradable(symbol, "bid", q)) === true) {
+    if (
+      UPBIT_API &&
+      UPBIT_SEC &&
+      BINANCE_API &&
+      BINANCE_API &&
+      (await checkTradable(symbol, "bid", q)) === true
+    ) {
       console.log("업비트 bid 바이낸스 ask");
       Promise.all([
         await upbitTrade(symbol, "bid", q),
@@ -349,7 +364,13 @@ export const binanceBidUpbitAsk = async (req, res, next) => {
     const {
       body: { symbol, q },
     } = req;
-    if ((await checkTradable(symbol, "ask", q)) === true) {
+    if (
+      UPBIT_API &&
+      UPBIT_SEC &&
+      BINANCE_API &&
+      BINANCE_API &&
+      (await checkTradable(symbol, "ask", q)) === true
+    ) {
       console.log("업비트 ask 바이낸스 bid");
       Promise.all([
         await upbitTrade(symbol, "ask", q),
