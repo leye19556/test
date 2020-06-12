@@ -4,7 +4,7 @@ dotenv.config();
 const token = process.env.PRODUCTION
   ? process.env.TELEGRAM_BOT_API
   : process.env.LOCAL_TELEGRAM_BOT_API;
-export const chatId = [1258091981, 401733277, 302830051];
+export const chatId = [1258091981]; //401733277, 302830051];
 export const bot = new TelegramBot(token, { polling: true });
 export const sendMessage = async (message, started) => {
   if (started) {
@@ -23,18 +23,23 @@ export const postMessage = (req, res, next) => {
       body: { coinInfo },
     } = req;
     console.log(coinInfo.percentBit);
-    const msg = `
-      [${coinInfo.symbol}] 업비트:${coinInfo.upbit}₩ 바이낸스:${
-      coinInfo.binance
-    }₩  (${coinInfo.percentUp}%) ${
+    let msg = `[${coinInfo.symbol}]`;
+    if (
+      coinInfo.upbit !== undefined &&
+      coinInfo.percentUp !== undefined &&
+      coinInfo.percentUp !== -100
+    ) {
+      msg += `업비트:${coinInfo.upbit}₩ 바이낸스:${coinInfo.binance}₩  (${coinInfo.percentUp}%) `;
+    }
+    if (
       coinInfo.bithumb !== undefined &&
       coinInfo.percentBit !== undefined &&
       coinInfo.percentBit !== -100
-        ? `  빗썸:${coinInfo.bithumb}₩ 바이낸스:${
-            coinInfo.binance
-          }₩  (${`${coinInfo.percentBit}%`})\n`
-        : ""
-    }`;
+    ) {
+      msg += `빗썸:${coinInfo.bithumb}₩ 바이낸스:${
+        coinInfo.binance
+      }₩ (${`${coinInfo.percentBit}%`})`;
+    }
     sendMessage(msg, true);
     res.end();
   } catch (e) {
