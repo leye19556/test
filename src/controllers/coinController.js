@@ -47,8 +47,6 @@ export const deleteCoin = async (req, res, next) => {
         .status(404)
         .json({ error: 1, msg: "코인이름이 db에 존재하지 않습니다" });
     } else {
-      //console.log(name.trim());
-      //res.redirect("/admin");
       res.status(200).json({ error: 0, msg: "삭제 완료" });
     }
   } catch (e) {

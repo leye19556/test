@@ -16,10 +16,9 @@ let UPBIT_API = null,
   UPBIT_SEC = null,
   BINANCE_API = null,
   BINANCE_SEC = null;
-export let binance = null;
 const userList = {};
 let flag = 1;
-
+export let binance = null;
 export const checkExistOnBinance = async (symbol) => {
   const c = await binance.bookTickers();
   if (
@@ -33,8 +32,6 @@ export const postKey = async (req, res, next) => {
     const {
       body: { api1, sec1, api2, sec2, type, uid },
     } = req;
-    //console.log(req.body);
-    //console.log(userList);
     if (type === "cancel") {
       delete userList[uid];
     } else {
@@ -79,7 +76,6 @@ export const postUpbitKey = (req, res, next) => {
     } = req;
     UPBIT_API = api;
     UPBIT_SEC = sec;
-    //console.log(api, sec);
     res.end();
   } catch (e) {
     next(e);
@@ -87,12 +83,10 @@ export const postUpbitKey = (req, res, next) => {
 };
 
 export const getUpbitBalance = async () => {
-  //console.log("api", UPBIT_API, UPBIT_SEC);
   const payload = {
     access_key: UPBIT_API,
     nonce: v4(),
   };
-
   const token = jsonwebtoken.sign(payload, UPBIT_SEC);
   const url = "https://api.upbit.com/v1/accounts";
   const r = await axios.get(url, {
@@ -143,40 +137,6 @@ export const checkLatestPrice = async (symbol, from) => {
   }
 };
 
-const orderChange = async () => {
-  const body = {
-    market: "KRW-OST",
-  };
-  const query = queryString.encode(body);
-  const hash = crypto.createHash("sha512");
-  const queryHash = hash.update(query, "utf-8").digest("hex");
-  const payload = {
-    access_key: UPBIT_API,
-    nonce: v4(),
-    query_hash: queryHash,
-    query_hash_alg: "SHA512",
-  };
-
-  const token = jsonwebtoken.sign(payload, UPBIT_SEC);
-  const options = {
-    method: "GET",
-    url: "https://api.upbit.com/v1/orders/chance?" + query,
-    headers: { Authorization: `Bearer ${token}` },
-    json: body,
-  };
-  const {
-    data: {
-      market: { ask, bid },
-    },
-  } = await axios.get("https://api.upbit.com/v1/orders/chance?" + query, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-
-  return { ask, bid };
-};
-
 const checkTradable = async (symbol, type, q) => {
   const b = await axios.get(
     `https://api.binance.com/api/v3/ticker/bookTicker?symbol=${symbol}BTC`,
@@ -200,7 +160,6 @@ const checkTradable = async (symbol, type, q) => {
     type === "ask"
       ? upbitBalance.data.filter((coin) => coin.currency === symbol)[0]
       : upbitBalance.data.filter((coin) => coin.currency === "KRW")[0];
-  //console.log(upbitCoinInfo);
   if (type === "ask") {
     //upbit ask,  binance bid
     const bidQty = parseFloat(b.data.askQty, 10),

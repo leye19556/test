@@ -10,7 +10,6 @@ import {
 } from "./controllers/TradeController";
 let timer = null;
 //새 코인 공지시 코인 구매 진행
-
 const upbitListing = async () => {
   const {
     data: { data },
@@ -26,8 +25,6 @@ const upbitListing = async () => {
     const notice = await upbitNoticeModel.findOne({
       coin: symbol,
     });
-
-    //console.log(symbol, notices[i]);
     if (!notice) {
       //console.log("create");
       await upbitNoticeModel.create({
