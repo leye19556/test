@@ -1,9 +1,127 @@
 import coinModel from "../models/coinModel";
 import axios from "axios";
+import WebSocket from "ws";
+let wsBinance = null,
+  wsUpbit = null,
+  wsBithumb = null,
+  coinList = [],
+  tickers1 = {},
+  tickers2 = {},
+  tickers3 = {};
+const upbitWS = () => {
+  if (wsUpbit === null) {
+    wsUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
+    wsUpbit.binaryType = "arraybuffer";
+    wsUpbit.onopen = () => {
+      console.log("u connected");
+      const data = [
+        { ticket: "test" },
+        { type: "ticker", codes: coinList.map((coin) => `KRW-${coin}`) },
+      ];
+      wsUpbit.send(JSON.stringify(data));
+    };
+    wsUpbit.onmessage = (e) => {
+      const enc = new TextDecoder("utf-8");
+      const arr = new Uint8Array(e.data);
+      const { code, trade_price } = JSON.parse(enc.decode(arr));
+      const symbol = code.slice(code.indexOf("-") + 1, code.length);
+      tickers1[symbol] = trade_price;
+    };
+    wsUpbit.onclose = () => {
+      wsUpbit.close();
+      wsUpbit = null;
+    };
+  }
+};
+const binanceWS = () => {
+  if (wsBinance === null) {
+    let streams = "";
+    for (let i = 0; i < coinList.length; i++) {
+      if (i < coinList.length - 1) {
+        streams += `${coinList[i].toLowerCase()}btc@ticker/`;
+      } else streams += `${coinList[i].toLowerCase()}btc@ticker`;
+    }
+    wsBinance = new WebSocket(
+      `wss://stream.binance.com:9443/stream?streams=${streams}` //ethbtc@ticker" //"
+    );
+    wsBinance.onopen = () => {
+      console.log("b connected");
+    };
+    wsBinance.onmessage = (e) => {
+      const {
+        data: { s, c },
+      } = JSON.parse(e.data);
+      const symbol = s.slice(0, s.length - 3);
+      tickers2[symbol] = parseFloat(c);
+    };
+    wsBinance.onclose = () => {
+      wsBinance.close();
+      wsBinance = null;
+    };
+  }
+};
+const bithumbWS = async () => {
+  if (wsBithumb === null) {
+    const bithumbList = Object.keys(
+      (await axios.get("https://api.bithumb.com/public/orderbook/ALL")).data
+        .data
+    ).slice(2);
+    wsBithumb = new WebSocket(`wss://pubwss.bithumb.com/pub/ws`);
+    wsBithumb.onopen = () => {
+      console.log("t connected");
+      const data = {
+        type: "ticker",
+        symbols: bithumbList.map((coin) => `${coin}_KRW`),
+        tickTypes: ["30M", "1H"],
+      };
+      wsBithumb.send(JSON.stringify(data));
+    };
+    wsBithumb.onmessage = (e) => {
+      const { data } = e;
+      if (data) {
+        const info = JSON.parse(data);
+        const symbol = info?.content?.symbol.slice(
+          0,
+          info?.content?.symbol.length - 4
+        );
+        tickers3[symbol] = parseFloat(info?.content?.closePrice);
+      }
+    };
+    wsBithumb.onclose = () => {
+      wsBithumb.close();
+      wsBithumb = null;
+    };
+    wsBithumb.onerror = (e) => {
+      console.log(e);
+    };
+  }
+};
+export const getTickers = async (req, res, next) => {
+  try {
+    coinList = (await coinModel.find())?.map((coin) => coin.name);
+    if (coinList.length > 0) {
+      upbitWS();
+      binanceWS();
+      bithumbWS();
+    }
+    const tickers = coinList.map((v) => {
+      return {
+        symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
+        last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
+        blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`],
+        thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
+      };
+    });
+
+    res.json(tickers);
+  } catch (e) {
+    next(e);
+  }
+};
+
 export const getCoins = async (req, res, next) => {
   try {
     const coins = await coinModel.find().sort({ name: 1 });
-    //console.log(coins);
     res.json(coins);
   } catch (e) {
     console.error(e);

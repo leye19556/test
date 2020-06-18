@@ -10,6 +10,7 @@ import {
   getCoins,
   getCurrency,
   editCoin,
+  getTickers,
 } from "../controllers/coinController";
 
 const Router = express.Router();
@@ -17,6 +18,7 @@ Router.get("/", getCoins);
 Router.post("/", postCoin);
 Router.delete("/", deleteCoin);
 Router.put("/", editCoin);
+Router.get("/tickers", getTickers);
 Router.get("/notice/upbit", getUpbitNotice);
 Router.get("/notice/binance", getBinanceNotice);
 Router.post("/notice/binance", postBinanceNotice);
