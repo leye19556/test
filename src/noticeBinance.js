@@ -65,7 +65,7 @@ const binanceListing = async () => {
             link: item.link,
             updatedAt: moment().format("YYYY/MM/DD"),
           });
-          sendMessage(`바이낸스 업데이트: ${item.title}\n[업비트]`, true);
+          sendMessage(`바이낸스 업데이트: ${item.title}`, true);
           if (upbit) {
             const {
               data: { orderbook_units },
