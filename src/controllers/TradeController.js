@@ -19,6 +19,7 @@ let UPBIT_API = null,
 const userList = {};
 let flag = 1;
 export let binance = null;
+export let upbit = null;
 export const checkExistOnBinance = async (symbol) => {
   const c = await binance.bookTickers();
   if (
@@ -34,6 +35,8 @@ export const postKey = async (req, res, next) => {
     } = req;
     if (type === "cancel") {
       delete userList[uid];
+      binanae = null;
+      upbit = null;
     } else {
       UPBIT_API = api1;
       UPBIT_SEC = sec1;
@@ -43,6 +46,10 @@ export const postKey = async (req, res, next) => {
         APIKEY: api2,
         APISECRET: sec2,
       });
+      upbit = {
+        UPBIT_API,
+        UPBIT_SEC,
+      };
       userList[uid] = {
         UPBIT: { UPBIT_API, UPBIT_SEC },
         BINANCE: { BINANCE_API, BINANCE_SEC, binance },
