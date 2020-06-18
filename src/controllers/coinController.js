@@ -89,7 +89,7 @@ const bithumbWS = async () => {
     };
     wsBithumb.onclose = () => {
       wsBithumb.close();
-      //wsBithumb = null;
+      wsBithumb = null;
     };
     wsBithumb.onerror = (e) => {
       console.log(e);
