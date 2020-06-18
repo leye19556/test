@@ -29,7 +29,7 @@ const upbitWS = () => {
     };
     wsUpbit.onclose = () => {
       wsUpbit.close();
-      wsUpbit = null;
+      //wsUpbit = null;
     };
   }
 };
@@ -56,7 +56,7 @@ const binanceWS = () => {
     };
     wsBinance.onclose = () => {
       wsBinance.close();
-      wsBinance = null;
+      //wsBinance = null;
     };
   }
 };
@@ -89,7 +89,7 @@ const bithumbWS = async () => {
     };
     wsBithumb.onclose = () => {
       wsBithumb.close();
-      wsBithumb = null;
+      //wsBithumb = null;
     };
     wsBithumb.onerror = (e) => {
       console.log(e);
