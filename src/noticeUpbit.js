@@ -45,7 +45,6 @@ const upbitListing = async () => {
               askPrice,
               askQty,
             } = await checkLatestPrice(symbol, "binance");
-            //console.log(askPrice);
             let balance = await getBinanceBalance(),
               limitPrice = parseFloat(
                 (parseFloat(askPrice) * 0.02 + parseFloat(askPrice)).toFixed(8)
