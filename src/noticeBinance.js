@@ -2,7 +2,12 @@ import { sendMessage } from "./controllers/botController";
 import puppeteer from "puppeteer";
 import moment from "moment";
 import binanceNoticeModel from "./models/binanceNoticeModel";
-import { upbit } from "./controllers/TradeController";
+import {
+  getUpbitBalance,
+  checkLatestPrice,
+  upbitTrade,
+  upbit,
+} from "./controllers/TradeController";
 const URL = "https://www.binance.com/en/support/announcement/c-48";
 let timer = null;
 const extractSymbol = (title) => {
