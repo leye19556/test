@@ -123,4 +123,4 @@ const binanceListing = async () => {
     }, 3000);
   }
 };
-//binanceListing();
+binanceListing();
