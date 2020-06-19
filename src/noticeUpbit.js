@@ -36,7 +36,8 @@ const upbitListing = async () => {
           createdAt: notices[i].created_at,
           checked: true,
         });
-        sendMessage(`업비트 업데이트: ${notices[i].title}`, true);
+        console.log("upbit");
+        sendMessage(`업비트 업데이트: ${notices[i].title}`, true, "upbit");
         if (binance) {
           if ((await checkExistOnBinance(symbol)) === true) {
             const {
@@ -47,9 +48,9 @@ const upbitListing = async () => {
             } = await checkLatestPrice(symbol, "binance");
             let balance = await getBinanceBalance(),
               limitPrice = parseFloat(
-                (parseFloat(askPrice) * 0.02 + parseFloat(askPrice)).toFixed(8)
+                (parseFloat(askPrice) * 0.05 + parseFloat(askPrice)).toFixed(8)
               );
-            sendMessage(`[바이낸스] ${symbol}매수 시도`, true);
+            sendMessage(`[바이낸스] ${symbol}매수 시도`, true, "upbit");
             //binance에서 구매 진행
             /*console.log(
           balance.BTC.available,
@@ -75,7 +76,8 @@ const upbitListing = async () => {
                   `바이낸스 ${symbol} 총 가격:${
                     price * qty
                   }BTC, ${qty}개 매수 진행`,
-                  true
+                  true,
+                  "upbit"
                 );
                 binanceTrade(symbol, "bid", qty);
               } else {
@@ -83,7 +85,7 @@ const upbitListing = async () => {
                 if (parseFloat(balance.BTC.available) < price * qty) {
                   msg = `바이낸스 BTC 잔액 부족 ${symbol} 매수 취소`;
                 }
-                sendMessage(msg, true);
+                sendMessage(msg, true, "upbit");
                 break;
               }
             }

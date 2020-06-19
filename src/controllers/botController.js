@@ -4,19 +4,27 @@ dotenv.config();
 const token = process.env.PRODUCTION
   ? process.env.TELEGRAM_BOT_API
   : process.env.LOCAL_TELEGRAM_BOT_API;
-export const chatId = [1258091981, 401733277, 302830051];
-export const bot = new TelegramBot(token, { polling: true });
-export const sendMessage = async (message, started) => {
+const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
+const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
+export const chatId = [-1001207277600];
+//[1258091981,401733277, 302830051];
+const bot = new TelegramBot(token, { polling: true });
+const upbitBot = new TelegramBot(upbitToken, { polling: true });
+const binanceBot = new TelegramBot(binanceToken, { polling: true });
+export const sendMessage = async (message, started, type = "") => {
   if (started) {
     [].forEach.call(chatId, (id) => {
       try {
-        bot.sendMessage(id, message);
+        if (type === "") bot.sendMessage(id, message);
+        else if (type === "upbit") upbitBot.sendMessage(id, message);
+        else if (type === "binance") binanceBot.sendMessage(id, message);
       } catch (e) {
         console.log("error");
       }
     });
   }
 };
+
 export const postMessage = (req, res, next) => {
   try {
     const {

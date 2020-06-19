@@ -65,14 +65,15 @@ const binanceListing = async () => {
             link: item.link,
             updatedAt: moment().format("YYYY/MM/DD"),
           });
-          sendMessage(`바이낸스 업데이트: ${item.title}`, true);
+          console.log("binance");
+          sendMessage(`바이낸스 업데이트: ${item.title}`, true, "binance");
           if (upbit) {
             const {
               data: { orderbook_units },
             } = checkLatestPrice(symbol, "upbit");
             const { ask_price, ask_size } = orderbook_units[0];
             limitPrice = parseFloat(
-              (parseFloat(ask_price) * 0.02 + parseFloat(ask_price)).toFixed(8)
+              (parseFloat(ask_price) * 0.05 + parseFloat(ask_price)).toFixed(8)
             );
             while (true) {
               //바이낸스 상장 업비트에서 매수 시도
@@ -96,14 +97,15 @@ const binanceListing = async () => {
                   `업비트 ${symbol} 총 가격:${
                     price * qty
                   }KRW, ${qty}개 매수 진행`,
-                  true
+                  true,
+                  "binance"
                 );
               } else {
                 let msg = `업비트 ${symbol}매수 종료`;
                 if (parseFloat(balance.BTC.available) < price * qty) {
                   msg = `업비트 KRW 잔액 ${symbol}부족 매수 취소`;
                 }
-                sendMessage(msg, true);
+                sendMessage(msg, true, "binance");
                 break;
               }
             }
