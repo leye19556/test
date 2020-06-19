@@ -8,6 +8,7 @@ let wsBinance = null,
   tickers1 = {},
   tickers2 = {},
   tickers3 = {};
+
 const upbitWS = async () => {
   if (wsUpbit === null) {
     const upbitList = (
@@ -39,9 +40,12 @@ const upbitWS = async () => {
         wsUpbit = null;
       }
     };
+    wsUpbit.onerror = (e) => {
+      console.log(e);
+    };
   }
 };
-const binanceWS = async () => {
+const binanceWS = () => {
   if (wsBinance === null) {
     let streams = "";
     for (let i = 0; i < coinList.length; i++) {
@@ -67,6 +71,9 @@ const binanceWS = async () => {
         wsBinance.close();
         wsBinance = null;
       }
+    };
+    wsBinance.onerror = (e) => {
+      console.log(e);
     };
   }
 };
