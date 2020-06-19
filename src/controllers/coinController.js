@@ -34,8 +34,10 @@ const upbitWS = async () => {
       tickers1[symbol] = trade_price;
     };
     wsUpbit.onclose = () => {
-      wsUpbit.close();
-      //wsUpbit = null;
+      if (wsUpbit !== null) {
+        wsUpbit.close();
+        wsUpbit = null;
+      }
     };
   }
 };
@@ -61,8 +63,10 @@ const binanceWS = async () => {
       tickers2[symbol] = parseFloat(c);
     };
     wsBinance.onclose = () => {
-      wsBinance.close();
-      //wsBinance = null;
+      if (ws !== null) {
+        wsBinance.close();
+        wsBinance = null;
+      }
     };
   }
 };
