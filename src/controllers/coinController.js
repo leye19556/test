@@ -8,7 +8,6 @@ let wsBinance = null,
   tickers1 = {},
   tickers2 = {},
   tickers3 = {};
-
 const upbitWS = async () => {
   if (wsUpbit === null) {
     const upbitList = (
