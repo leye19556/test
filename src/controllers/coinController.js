@@ -36,7 +36,6 @@ const upbitWS = async () => {
     wsUpbit.onclose = () => {
       if (wsUpbit !== null) {
         wsUpbit.close();
-        wsUpbit = null;
       }
     };
     wsUpbit.onerror = (e) => {
@@ -44,7 +43,7 @@ const upbitWS = async () => {
     };
   }
 };
-const binanceWS = () => {
+const binanceWS = async () => {
   if (wsBinance === null) {
     let streams = "";
     for (let i = 0; i < coinList.length; i++) {
