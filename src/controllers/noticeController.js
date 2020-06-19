@@ -1,13 +1,7 @@
-import moment from "moment";
 import binanceNoticeModel from "../models/binanceNoticeModel";
 import upbitNoticeModel from "../models/upbitNoticeModel";
 import "@babel/polyfill";
 import { sendMessage } from "./botController";
-import {
-  getUpbitBalance,
-  checkLatestPrice,
-  upbitTrade,
-} from "./TradeController";
 export const getUpbitNotice = async (req, res, next) => {
   try {
     const notices = await upbitNoticeModel.find().sort({ updatedAt: -1 });

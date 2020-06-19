@@ -1,7 +1,6 @@
 import coinModel from "../models/coinModel";
 import axios from "axios";
 import WebSocket from "ws";
-import { upbit } from "./TradeController";
 let wsBinance = null,
   wsUpbit = null,
   wsBithumb = null,
