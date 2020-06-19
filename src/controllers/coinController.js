@@ -1,6 +1,7 @@
 import coinModel from "../models/coinModel";
 import axios from "axios";
 import WebSocket from "ws";
+import { upbit } from "./TradeController";
 let wsBinance = null,
   wsUpbit = null,
   wsBithumb = null,
@@ -8,15 +9,21 @@ let wsBinance = null,
   tickers1 = {},
   tickers2 = {},
   tickers3 = {};
-const upbitWS = () => {
+const upbitWS = async () => {
   if (wsUpbit === null) {
+    const upbitList = (
+      await axios.get("https://api.upbit.com/v1/market/all")
+    ).data.filter(
+      (coin) =>
+        coin.market.includes("KRW") && coinList.includes(coin.market.slice(4))
+    );
     wsUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
       console.log("u connected");
       const data = [
         { ticket: "test" },
-        { type: "ticker", codes: coinList.map((coin) => `KRW-${coin}`) },
+        { type: "ticker", codes: upbitList.map((coin) => `${coin.market}`) },
       ];
       wsUpbit.send(JSON.stringify(data));
     };
@@ -33,7 +40,7 @@ const upbitWS = () => {
     };
   }
 };
-const binanceWS = () => {
+const binanceWS = async () => {
   if (wsBinance === null) {
     let streams = "";
     for (let i = 0; i < coinList.length; i++) {
