@@ -2,8 +2,11 @@ import coinModel from "../models/coinModel";
 import axios from "axios";
 import WebSocket from "ws";
 let wsBinance = null,
+  wsBinanceState = null,
   wsUpbit = null,
-  wsBithumb = null;
+  wsUpbitState = null,
+  wsBithumb = null,
+  wsBithumbState = null;
 export let coinList = [];
 export let tickers1 = {};
 export let tickers2 = {};
@@ -27,22 +30,26 @@ const upbitWS = async () => {
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
       console.log("u connected");
-      const data = [
-        { ticket: "test" },
-        {
-          type: "ticker",
-          codes: ["KRW-BTC", ...upbitList.map((coin) => `${coin.market}`)],
-        },
-      ];
-      wsUpbit.send(JSON.stringify(data));
+      if (wsUpbit.readyState === 1) {
+        const data = [
+          { ticket: "test" },
+          {
+            type: "ticker",
+            codes: ["KRW-BTC", ...upbitList.map((coin) => `${coin.market}`)],
+          },
+        ];
+        wsUpbit.send(JSON.stringify(data));
+      }
     };
     wsUpbit.onmessage = (e) => {
-      const enc = new TextDecoder("utf-8");
-      const arr = new Uint8Array(e.data);
-      const { code, trade_price } = JSON.parse(enc.decode(arr));
-      const symbol = code.slice(code.indexOf("-") + 1, code.length);
-      if (symbol === "BTC") upbitBTCKrw = trade_price;
-      tickers1[symbol] = trade_price;
+      if (wsUpbit.readyState === 1) {
+        const enc = new TextDecoder("utf-8");
+        const arr = new Uint8Array(e.data);
+        const { code, trade_price } = JSON.parse(enc.decode(arr));
+        const symbol = code.slice(code.indexOf("-") + 1, code.length);
+        if (symbol === "BTC") upbitBTCKrw = trade_price;
+        tickers1[symbol] = trade_price;
+      }
     };
     wsUpbit.onclose = () => {
       if (wsUpbit !== null) {
@@ -68,18 +75,22 @@ const binanceWS = async () => {
       `wss://stream.binance.com:9443/stream?streams=${streams}` //ethbtc@ticker" //"
     );
     wsBinance.onopen = () => {
-      console.log("b connected");
+      if (wsBinance.readyState === 1) {
+        console.log("b connected");
+      }
     };
     wsBinance.onmessage = (e) => {
-      const {
-        data: { s, c },
-      } = JSON.parse(e.data);
-      const symbol = s.slice(0, s.length - 3);
-      if (symbol === "BTCU") {
-        binanceBTC = parseFloat(c);
-        tickers2[s.slice(0, s.length - 4)] = parseFloat(c);
-      } else {
-        tickers2[symbol] = parseFloat(c);
+      if (wsBinance.readyState === 1) {
+        const {
+          data: { s, c },
+        } = JSON.parse(e.data);
+        const symbol = s.slice(0, s.length - 3);
+        if (symbol === "BTCU") {
+          binanceBTC = parseFloat(c);
+          tickers2[s.slice(0, s.length - 4)] = parseFloat(c);
+        } else {
+          tickers2[symbol] = parseFloat(c);
+        }
       }
     };
     wsBinance.onclose = () => {
@@ -102,13 +113,15 @@ const bithumbWS = async () => {
     ).slice(2);
     wsBithumb = new WebSocket(`wss://pubwss.bithumb.com/pub/ws`);
     wsBithumb.onopen = () => {
-      console.log("t connected");
-      const data = {
-        type: "ticker",
-        symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
-        tickTypes: ["30M", "1H"],
-      };
-      wsBithumb.send(JSON.stringify(data));
+      if (wsBithumb.readyState === 1) {
+        console.log("t connected");
+        const data = {
+          type: "ticker",
+          symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
+          tickTypes: ["30M", "1H"],
+        };
+        wsBithumb.send(JSON.stringify(data));
+      }
     };
     wsBithumb.onmessage = (e) => {
       const { data } = e;
