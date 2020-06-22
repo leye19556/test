@@ -23,59 +23,61 @@ const getCurrency = async () => {
   usdKrw = data.rates.USDKRW.rate;
 };
 const startBot = () => {
-  tickers = ["BTC", ...coinList].map((v) => {
-    if (v !== "BTC") {
-      return {
-        symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
-        last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
-        blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`],
-        convertedBlast:
-          tickers2[`${v}`] === undefined
-            ? 0
-            : parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10),
-        thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
-        per1:
-          tickers1[`${v}`] === undefined || tickers2[`${v}`] === undefined
-            ? undefined
-            : getPercent(
-                tickers1[`${v}`],
-                parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
-              ),
-        per2:
-          tickers3[`${v}`] === undefined || tickers2[`${v}`] === undefined
-            ? undefined
-            : getPercent(
-                tickers3[`${v}`],
-                parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
-              ),
-      };
-    } else {
-      return {
-        symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
-        last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
-        blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`] * usdKrw,
-        convertedBlast:
-          tickers2[`${v}`] === undefined
-            ? 0
-            : parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10),
-        thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
-        per1:
-          tickers1[`${v}`] === undefined || tickers2[`${v}`] === undefined
-            ? undefined
-            : getPercent(
-                tickers1[`${v}`],
-                parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10)
-              ),
-        per2:
-          tickers3[`${v}`] === undefined || tickers2[`${v}`] === undefined
-            ? undefined
-            : getPercent(
-                tickers3[`${v}`],
-                parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10)
-              ),
-      };
-    }
-  });
+  if (tickers1.length > 0 || tickers2.length > 0 || tickers3.length > 0) {
+    tickers = ["BTC", ...coinList].map((v) => {
+      if (v !== "BTC") {
+        return {
+          symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
+          last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
+          blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`],
+          convertedBlast:
+            tickers2[`${v}`] === undefined
+              ? 0
+              : parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10),
+          thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
+          per1:
+            tickers1[`${v}`] === undefined || tickers2[`${v}`] === undefined
+              ? undefined
+              : getPercent(
+                  tickers1[`${v}`],
+                  parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
+                ),
+          per2:
+            tickers3[`${v}`] === undefined || tickers2[`${v}`] === undefined
+              ? undefined
+              : getPercent(
+                  tickers3[`${v}`],
+                  parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
+                ),
+        };
+      } else {
+        return {
+          symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
+          last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
+          blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`] * usdKrw,
+          convertedBlast:
+            tickers2[`${v}`] === undefined
+              ? 0
+              : parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10),
+          thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
+          per1:
+            tickers1[`${v}`] === undefined || tickers2[`${v}`] === undefined
+              ? undefined
+              : getPercent(
+                  tickers1[`${v}`],
+                  parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10)
+                ),
+          per2:
+            tickers3[`${v}`] === undefined || tickers2[`${v}`] === undefined
+              ? undefined
+              : getPercent(
+                  tickers3[`${v}`],
+                  parseFloat((tickers2[`${v}`] * usdKrw).toFixed(2), 10)
+                ),
+        };
+      }
+    });
+  }
   if (checkBot === true) {
     console.log(percent);
     tickers.forEach((ticker) => {
