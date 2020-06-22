@@ -6,11 +6,13 @@ const token = process.env.PRODUCTION
   : process.env.LOCAL_TELEGRAM_BOT_API;
 const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
 const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
-export const chatId = [-1001207277600];
+export const chatId = [1258091981]; //[-1001207277600];
 //[1258091981,401733277, 302830051];
 const bot = new TelegramBot(token, { polling: true });
-const upbitBot = new TelegramBot(upbitToken, { polling: true });
-const binanceBot = new TelegramBot(binanceToken, { polling: true });
+//const upbitBot = new TelegramBot(upbitToken, { polling: true });
+//const binanceBot = new TelegramBot(binanceToken, { polling: true });
+export let checkBot = false;
+export let coinPercent = {};
 export const sendMessage = async (message, started, type = "") => {
   if (started) {
     [].forEach.call(chatId, (id) => {
@@ -28,10 +30,16 @@ export const sendMessage = async (message, started, type = "") => {
 export const postMessage = (req, res, next) => {
   try {
     const {
-      body: { coinInfo },
+      body: { coinPer },
     } = req;
-    console.log(coinInfo.percentBit);
-    let msg = `[${coinInfo.symbol}]`;
+    if (checkBot === false) {
+      checkBot = true;
+      coinPercent = coinPer;
+    } else {
+      checkBot = false;
+      coinPercent = {};
+    }
+    /*let msg = `[${coinInfo.symbol}]`;
     if (
       coinInfo.upbit !== undefined &&
       coinInfo.percentUp !== undefined &&
@@ -48,7 +56,7 @@ export const postMessage = (req, res, next) => {
         coinInfo.binance
       }₩ (${`${coinInfo.percentBit}%`})`;
     }
-    sendMessage(msg, true);
+    sendMessage(msg, true);*/
     res.end();
   } catch (e) {
     console.error(e);
@@ -59,6 +67,8 @@ export const postCancelMessage = (req, res, next) => {
   try {
     const msg = `------알림 취소------\n`;
     sendMessage(msg, true);
+    checkBot = false;
+    coinPercent = {};
     res.end();
   } catch (e) {
     console.error(e);

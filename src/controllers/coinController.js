@@ -3,11 +3,18 @@ import axios from "axios";
 import WebSocket from "ws";
 let wsBinance = null,
   wsUpbit = null,
-  wsBithumb = null,
-  coinList = [],
-  tickers1 = {},
-  tickers2 = {},
-  tickers3 = {};
+  wsBithumb = null;
+export let coinList = [];
+export let tickers1 = {};
+export let tickers2 = {};
+export let tickers3 = {};
+export let upbitBTCKrw = 0;
+export let binanceBTC = 0;
+export let thumbBTCKrw = 0;
+export const getPercent = (x, y) => {
+  return ((x - y) / y) * 100;
+};
+//업비트 소켓 연결
 const upbitWS = async () => {
   if (wsUpbit === null) {
     const upbitList = (
@@ -22,7 +29,10 @@ const upbitWS = async () => {
       console.log("u connected");
       const data = [
         { ticket: "test" },
-        { type: "ticker", codes: upbitList.map((coin) => `${coin.market}`) },
+        {
+          type: "ticker",
+          codes: ["KRW-BTC", ...upbitList.map((coin) => `${coin.market}`)],
+        },
       ];
       wsUpbit.send(JSON.stringify(data));
     };
@@ -31,6 +41,7 @@ const upbitWS = async () => {
       const arr = new Uint8Array(e.data);
       const { code, trade_price } = JSON.parse(enc.decode(arr));
       const symbol = code.slice(code.indexOf("-") + 1, code.length);
+      if (symbol === "BTC") upbitBTCKrw = trade_price;
       tickers1[symbol] = trade_price;
     };
     wsUpbit.onclose = () => {
@@ -43,14 +54,16 @@ const upbitWS = async () => {
     };
   }
 };
+//바이낸스 소켓 연결
 const binanceWS = async () => {
   if (wsBinance === null) {
     let streams = "";
     for (let i = 0; i < coinList.length; i++) {
       if (i < coinList.length - 1) {
         streams += `${coinList[i].toLowerCase()}btc@ticker/`;
-      } else streams += `${coinList[i].toLowerCase()}btc@ticker`;
+      } else streams += `${coinList[i].toLowerCase()}btc@ticker/`;
     }
+    streams += `btcusdt@ticker`;
     wsBinance = new WebSocket(
       `wss://stream.binance.com:9443/stream?streams=${streams}` //ethbtc@ticker" //"
     );
@@ -62,7 +75,12 @@ const binanceWS = async () => {
         data: { s, c },
       } = JSON.parse(e.data);
       const symbol = s.slice(0, s.length - 3);
-      tickers2[symbol] = parseFloat(c);
+      if (symbol === "BTCU") {
+        binanceBTC = parseFloat(c);
+        tickers2[s.slice(0, s.length - 4)] = parseFloat(c);
+      } else {
+        tickers2[symbol] = parseFloat(c);
+      }
     };
     wsBinance.onclose = () => {
       if (ws !== null) {
@@ -75,6 +93,8 @@ const binanceWS = async () => {
     };
   }
 };
+
+//빗썸 소켓 연결
 const bithumbWS = async () => {
   if (wsBithumb === null) {
     const bithumbList = Object.keys(
@@ -86,7 +106,7 @@ const bithumbWS = async () => {
       console.log("t connected");
       const data = {
         type: "ticker",
-        symbols: bithumbList.map((coin) => `${coin}_KRW`),
+        symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
         tickTypes: ["30M", "1H"],
       };
       wsBithumb.send(JSON.stringify(data));
@@ -126,10 +146,28 @@ export const getTickers = async (req, res, next) => {
         symbol: v, //tickers1[`${v}/KRW`].symbol.slice(0, tickers1[v].symbol.indexOf("/")),
         last: tickers1[`${v}`] === undefined ? 0 : tickers1[`${v}`],
         blast: tickers2[`${v}`] === undefined ? 0 : tickers2[`${v}`],
+        convertedBlast:
+          tickers2[`${v}`] === undefined
+            ? 0
+            : parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10),
         thumb: tickers3[`${v}`] === undefined ? 0 : tickers3[`${v}`],
+        per1:
+          tickers1[`${v}`] === undefined || tickers2[`${v}`] === undefined
+            ? undefined
+            : getPercent(
+                tickers1[`${v}`],
+                parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
+              ),
+        per2:
+          tickers3[`${v}`] === undefined || tickers2[`${v}`] === undefined
+            ? undefined
+            : getPercent(
+                tickers3[`${v}`],
+                parseFloat((tickers2[`${v}`] * upbitBTCKrw).toFixed(2), 10)
+              ),
       };
     });
-
+    //console.log(tickers);
     res.json(tickers);
   } catch (e) {
     next(e);

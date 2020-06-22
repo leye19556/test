@@ -36,7 +36,6 @@ const upbitListing = async () => {
           createdAt: notices[i].created_at,
           checked: true,
         });
-        console.log("upbit");
         sendMessage(`업비트 업데이트: ${notices[i].title}`, true, "upbit");
         if (binance) {
           if ((await checkExistOnBinance(symbol)) === true) {

@@ -14,6 +14,7 @@ import adminRoute from "./routes/adminRoute";
 import tradeRoute from "./routes/tradeRoute";
 import "./noticeUpbit";
 import "./noticeBinance";
+import "./noticeCoinGap";
 import "@babel/polyfill";
 dotenv.config();
 const app = express();
