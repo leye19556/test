@@ -9,8 +9,8 @@ const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
 export const chatId = [-1001207277600];
 //[1258091981,401733277, 302830051];
 const bot = new TelegramBot(token, { polling: true });
-const upbitBot = new TelegramBot(upbitToken, { polling: true });
-const binanceBot = new TelegramBot(binanceToken, { polling: true });
+//const upbitBot = new TelegramBot(upbitToken, { polling: true });
+//const binanceBot = new TelegramBot(binanceToken, { polling: true });
 export let checkBot = false;
 export let coinPercent = {};
 export const sendMessage = async (message, started, type = "") => {
@@ -18,8 +18,8 @@ export const sendMessage = async (message, started, type = "") => {
     [].forEach.call(chatId, (id) => {
       try {
         if (type === "") bot.sendMessage(id, message);
-        else if (type === "upbit") upbitBot.sendMessage(id, message);
-        else if (type === "binance") binanceBot.sendMessage(id, message);
+        //else if (type === "upbit") upbitBot.sendMessage(id, message);
+        //else if (type === "binance") binanceBot.sendMessage(id, message);
       } catch (e) {
         console.log("error");
       }

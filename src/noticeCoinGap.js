@@ -23,7 +23,11 @@ const getCurrency = async () => {
   usdKrw = data.rates.USDKRW.rate;
 };
 const startBot = () => {
-  if (tickers1.length > 0 || tickers2.length > 0 || tickers3.length > 0) {
+  if (
+    Object.keys(tickers1).length > 0 ||
+    Object.keys(tickers2).length > 0 ||
+    Object.keys(tickers3).length > 0
+  ) {
     tickers = ["BTC", ...coinList].map((v) => {
       if (v !== "BTC") {
         return {
@@ -79,7 +83,6 @@ const startBot = () => {
     });
   }
   if (checkBot === true) {
-    console.log(percent);
     tickers.forEach((ticker) => {
       if (
         coinPercent[ticker.symbol] !== undefined &&
