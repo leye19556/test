@@ -38,6 +38,7 @@ export const postMessage = (req, res, next) => {
     } else {
       checkBot = false;
       coinPercent = {};
+      sendMessage(`------알림 취소------\n`, true);
     }
     /*let msg = `[${coinInfo.symbol}]`;
     if (
