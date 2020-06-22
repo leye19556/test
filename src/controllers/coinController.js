@@ -93,7 +93,6 @@ const binanceWS = async () => {
     };
   }
 };
-
 //빗썸 소켓 연결
 const bithumbWS = async () => {
   if (wsBithumb === null) {
