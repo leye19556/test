@@ -113,15 +113,15 @@ const bithumbWS = async () => {
     ).slice(2);
     wsBithumb = new WebSocket(`wss://pubwss.bithumb.com/pub/ws`);
     wsBithumb.onopen = () => {
-      //if (wsBithumb.readyState === 1) {
-      //console.log("t connected");
-      const data = {
-        type: "ticker",
-        symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
-        tickTypes: ["30M", "1H"],
-      };
-      wsBithumb.send(JSON.stringify(data));
-      //}
+      if (wsBithumb !== null && wsBithumb.readyState === 1) {
+        console.log("t connected");
+        const data = {
+          type: "ticker",
+          symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
+          tickTypes: ["30M", "1H"],
+        };
+        wsBithumb.send(JSON.stringify(data));
+      }
     };
     wsBithumb.onmessage = (e) => {
       const { data } = e;

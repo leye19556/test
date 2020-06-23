@@ -142,7 +142,12 @@ const startBot = () => {
       }
     });
   } else {
-    percent = {};
+    clearTimeout(timer);
+    timer = setTimeout(() => {
+      timer = null;
+      startBot();
+      getCurrency();
+    }, 1000);
   }
   if (!timer) {
     timer = setTimeout(() => {
