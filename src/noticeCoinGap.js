@@ -93,8 +93,10 @@ const startBot = () => {
       ) {
         if (percent[ticker.symbol] === undefined) {
           percent[ticker.symbol] = {
-            per1: ticker.per1.toFixed(2),
-            per2: ticker.per2.toFixed(2),
+            per1:
+              ticker.per1 !== undefined ? ticker.per1.toFixed(2) : undefined,
+            per2:
+              ticker.per2 !== undefined ? ticker.per2.toFixed(2) : undefined,
           };
           let msg = `[${ticker.symbol}]`;
           if (ticker.per1 !== undefined) {
@@ -110,14 +112,18 @@ const startBot = () => {
           sendMessage(msg, true);
         } else {
           if (
-            parseFloat(percent[ticker.symbol].per1, 10) !==
-              parseFloat(ticker.per1.toFixed(2), 10) ||
-            parseFloat(percent[ticker.symbol].per2, 10) !==
-              parseFloat(ticker.per2.toFixed(2), 10)
+            (ticker.per1 !== undefined &&
+              parseFloat(percent[ticker.symbol].per1, 10) !==
+                parseFloat(ticker.per1.toFixed(2), 10)) ||
+            (ticker.per2 !== undefined &&
+              parseFloat(percent[ticker.symbol].per2, 10) !==
+                parseFloat(ticker.per2.toFixed(2), 10))
           ) {
             percent[ticker.symbol] = {
-              per1: ticker.per1.toFixed(2),
-              per2: ticker.per2.toFixed(2),
+              per1:
+                ticker.per1 !== undefined ? ticker.per1.toFixed(2) : undefined,
+              per2:
+                ticker.per2 !== undefined ? ticker.per2.toFixed(2) : undefined,
             };
             let msg = `[${ticker.symbol}]`;
             if (ticker.per1 !== undefined) {
