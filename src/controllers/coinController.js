@@ -30,7 +30,7 @@ const upbitWS = async () => {
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
       console.log("u connected");
-      //if (wsUpbit.readyState === 1) {
+      if (wsUpbit.readyState === 1) {
       const data = [
         { ticket: "test" },
         {
@@ -39,7 +39,6 @@ const upbitWS = async () => {
         },
       ];
       wsUpbit.send(JSON.stringify(data));
-      //}
     };
     wsUpbit.onmessage = (e) => {
       if (wsUpbit.readyState === 1) {
@@ -75,7 +74,7 @@ const binanceWS = async () => {
       `wss://stream.binance.com:9443/stream?streams=${streams}` //ethbtc@ticker" //"
     );
     wsBinance.onopen = () => {
-      if (wsBinance.readyState === 1) {
+      if (wsBinance!==null&&wsBinance.readyState === 1) {
         console.log("b connected");
       }
     };
