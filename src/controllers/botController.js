@@ -6,7 +6,7 @@ const token = process.env.PRODUCTION
   : process.env.LOCAL_TELEGRAM_BOT_API;
 const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
 const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
-export const chatId = [-1001207277600];
+export const chatId = [1258091981];
 //[1258091981,401733277, 302830051];
 const bot = new TelegramBot(token, { polling: true });
 const upbitBot = new TelegramBot(upbitToken, { polling: true });
@@ -34,7 +34,13 @@ export const postMessage = (req, res, next) => {
     } = req;
     if (checkBot === false) {
       checkBot = true;
-      coinPercent = coinPer;
+      for (let i = 0; i < Object.keys(coinPer).length; i++) {
+        if (coinPer[Object.keys(coinPer)[i]] !== "") {
+          coinPercent[Object.keys(coinPer)[i]] =
+            coinPer[Object.keys(coinPer)[i]];
+        }
+      }
+      console.log(coinPercent);
     } else {
       checkBot = false;
       coinPercent = {};

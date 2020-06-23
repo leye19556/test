@@ -83,42 +83,16 @@ const startBot = () => {
     });
   }
   if (checkBot === true) {
-    tickers.forEach((ticker) => {
-      if (
-        coinPercent[ticker.symbol] !== undefined &&
-        ((ticker.per1 !== undefined &&
-          Math.abs(ticker.per1) > coinPercent[ticker.symbol]) ||
-          (ticker.per2 !== undefined &&
-            Math.abs(ticker.per2) > coinPercent[ticker.symbol]))
-      ) {
-        if (percent[ticker.symbol] === undefined) {
-          percent[ticker.symbol] = {
-            per1:
-              ticker.per1 !== undefined ? ticker.per1.toFixed(2) : undefined,
-            per2:
-              ticker.per2 !== undefined ? ticker.per2.toFixed(2) : undefined,
-          };
-          let msg = `[${ticker.symbol}]`;
-          if (ticker.per1 !== undefined) {
-            msg += `업비트:${ticker.last}₩ 바이낸스:${
-              ticker.convertedBlast
-            }₩  (${ticker.per1.toFixed(2)}%) `;
-          }
-          if (ticker.per2 !== undefined) {
-            msg += `빗썸:${ticker.thumb}₩ 바이낸스:${
-              ticker.convertedBlast
-            }₩ (${`${ticker.per2.toFixed(2)}%`})`;
-          }
-          sendMessage(msg, true);
-        } else {
-          if (
-            (ticker.per1 !== undefined &&
-              parseFloat(percent[ticker.symbol].per1, 10) !==
-                parseFloat(ticker.per1.toFixed(2), 10)) ||
+    if (Object.keys(coinPercent).length > 0) {
+      tickers.forEach((ticker) => {
+        if (
+          coinPercent[ticker.symbol] !== undefined &&
+          ((ticker.per1 !== undefined &&
+            Math.abs(ticker.per1) > coinPercent[ticker.symbol]) ||
             (ticker.per2 !== undefined &&
-              parseFloat(percent[ticker.symbol].per2, 10) !==
-                parseFloat(ticker.per2.toFixed(2), 10))
-          ) {
+              Math.abs(ticker.per2) > coinPercent[ticker.symbol]))
+        ) {
+          if (percent[ticker.symbol] === undefined) {
             percent[ticker.symbol] = {
               per1:
                 ticker.per1 !== undefined ? ticker.per1.toFixed(2) : undefined,
@@ -137,10 +111,42 @@ const startBot = () => {
               }₩ (${`${ticker.per2.toFixed(2)}%`})`;
             }
             sendMessage(msg, true);
+          } else {
+            if (
+              (ticker.per1 !== undefined &&
+                parseFloat(percent[ticker.symbol].per1, 10) !==
+                  parseFloat(ticker.per1.toFixed(2), 10)) ||
+              (ticker.per2 !== undefined &&
+                parseFloat(percent[ticker.symbol].per2, 10) !==
+                  parseFloat(ticker.per2.toFixed(2), 10))
+            ) {
+              percent[ticker.symbol] = {
+                per1:
+                  ticker.per1 !== undefined
+                    ? ticker.per1.toFixed(2)
+                    : undefined,
+                per2:
+                  ticker.per2 !== undefined
+                    ? ticker.per2.toFixed(2)
+                    : undefined,
+              };
+              let msg = `[${ticker.symbol}]`;
+              if (ticker.per1 !== undefined) {
+                msg += `업비트:${ticker.last}₩ 바이낸스:${
+                  ticker.convertedBlast
+                }₩  (${ticker.per1.toFixed(2)}%) `;
+              }
+              if (ticker.per2 !== undefined) {
+                msg += `빗썸:${ticker.thumb}₩ 바이낸스:${
+                  ticker.convertedBlast
+                }₩ (${`${ticker.per2.toFixed(2)}%`})`;
+              }
+              sendMessage(msg, true);
+            }
           }
         }
-      }
-    });
+      });
+    }
   } else {
     clearTimeout(timer);
     timer = setTimeout(() => {
