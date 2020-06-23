@@ -31,32 +31,33 @@ const upbitWS = async () => {
     wsUpbit.onopen = () => {
       console.log("u connected");
       if (wsUpbit.readyState === 1) {
-      const data = [
-        { ticket: "test" },
-        {
-          type: "ticker",
-          codes: ["KRW-BTC", ...upbitList.map((coin) => `${coin.market}`)],
-        },
-      ];
-      wsUpbit.send(JSON.stringify(data));
-    };
-    wsUpbit.onmessage = (e) => {
-      if (wsUpbit.readyState === 1) {
-        const enc = new TextDecoder("utf-8");
-        const arr = new Uint8Array(e.data);
-        const { code, trade_price } = JSON.parse(enc.decode(arr));
-        const symbol = code.slice(code.indexOf("-") + 1, code.length);
-        if (symbol === "BTC") upbitBTCKrw = trade_price;
-        tickers1[symbol] = trade_price;
+        const data = [
+          { ticket: "test" },
+          {
+            type: "ticker",
+            codes: ["KRW-BTC", ...upbitList.map((coin) => `${coin.market}`)],
+          },
+        ];
+        wsUpbit.send(JSON.stringify(data));
       }
-    };
-    wsUpbit.onclose = () => {
-      if (wsUpbit !== null) {
-        wsUpbit.close();
-      }
-    };
-    wsUpbit.onerror = (e) => {
-      console.log(e);
+      wsUpbit.onmessage = (e) => {
+        if (wsUpbit.readyState === 1) {
+          const enc = new TextDecoder("utf-8");
+          const arr = new Uint8Array(e.data);
+          const { code, trade_price } = JSON.parse(enc.decode(arr));
+          const symbol = code.slice(code.indexOf("-") + 1, code.length);
+          if (symbol === "BTC") upbitBTCKrw = trade_price;
+          tickers1[symbol] = trade_price;
+        }
+      };
+      wsUpbit.onclose = () => {
+        if (wsUpbit !== null) {
+          wsUpbit.close();
+        }
+      };
+      wsUpbit.onerror = (e) => {
+        console.log(e);
+      };
     };
   }
 };
@@ -74,7 +75,7 @@ const binanceWS = async () => {
       `wss://stream.binance.com:9443/stream?streams=${streams}` //ethbtc@ticker" //"
     );
     wsBinance.onopen = () => {
-      if (wsBinance!==null&&wsBinance.readyState === 1) {
+      if (wsBinance.readyState === 1) {
         console.log("b connected");
       }
     };
@@ -144,6 +145,7 @@ const bithumbWS = async () => {
     };
   }
 };
+
 export const getTickers = async (req, res, next) => {
   try {
     coinList = (await coinModel.find())?.map((coin) => coin.name);
