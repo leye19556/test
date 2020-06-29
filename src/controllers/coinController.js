@@ -112,37 +112,39 @@ const bithumbWS = async () => {
         .data
     ).slice(2);
     wsBithumb = new WebSocket(`wss://pubwss.bithumb.com/pub/ws`);
-    wsBithumb.onopen = () => {
-      if (wsBithumb !== null && wsBithumb.readyState === 1) {
-        console.log("t connected");
-        const data = {
-          type: "ticker",
-          symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
-          tickTypes: ["30M", "1H"],
-        };
-        wsBithumb.send(JSON.stringify(data));
-      }
-    };
-    wsBithumb.onmessage = (e) => {
-      const { data } = e;
-      if (data) {
-        const info = JSON.parse(data);
-        const symbol = info?.content?.symbol.slice(
-          0,
-          info?.content?.symbol.length - 4
-        );
-        tickers3[symbol] = parseFloat(info?.content?.closePrice);
-      }
-    };
-    wsBithumb.onclose = () => {
-      if (wsBithumb !== null) {
-        wsBithumb.close();
-        wsBithumb = null;
-      }
-    };
-    wsBithumb.onerror = (e) => {
-      console.log(e);
-    };
+    setTimeout(() => {
+      wsBithumb.onopen = () => {
+        if (wsBithumb !== null && wsBithumb.readyState === 1) {
+          console.log("t connected");
+          const data = {
+            type: "ticker",
+            symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
+            tickTypes: ["30M", "1H"],
+          };
+          wsBithumb.send(JSON.stringify(data));
+        }
+      };
+      wsBithumb.onmessage = (e) => {
+        const { data } = e;
+        if (data) {
+          const info = JSON.parse(data);
+          const symbol = info?.content?.symbol.slice(
+            0,
+            info?.content?.symbol.length - 4
+          );
+          tickers3[symbol] = parseFloat(info?.content?.closePrice);
+        }
+      };
+      wsBithumb.onclose = () => {
+        if (wsBithumb !== null) {
+          wsBithumb.close();
+          //wsBithumb = null;
+        }
+      };
+      wsBithumb.onerror = (e) => {
+        console.log(e);
+      };
+    }, 3000);
   }
 };
 
