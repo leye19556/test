@@ -153,7 +153,7 @@ export const getTickers = async (req, res, next) => {
     if (coinList.length > 0) {
       upbitWS();
       binanceWS();
-      bithumbWS();
+      //bithumbWS();
     }
     const tickers = coinList.map((v) => {
       return {
