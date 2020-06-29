@@ -1,3 +1,4 @@
+import axios from "axios";
 import {
   checkBot,
   coinPercent,
@@ -11,34 +12,15 @@ import {
   coinList,
   getPercent,
 } from "./controllers/coinController";
-import cheerio from "cheerio";
-import request from "request";
 let percent = {};
 let timer = null,
-  tickers = [],
-  usdKrw = 0;
+  tickers = [];
+export let usdKrw = 0;
 const getCurrency = async () => {
-  try {
-    console.log("re");
-    request.get(
-      "https://www.kita.net/cmmrcInfo/ehgtGnrlzInfo/rltmEhgt.do",
-      (err, response, body) => {
-        const $ = cheerio.load(body);
-        const $info = $(
-          "#contents > div.boardArea > div.tableSt.st4.alc > table > tbody > tr:nth-child(1)"
-        );
-        usdKrw = parseFloat(
-          $info.children("td:nth-child(2)").text().replace(",", ""),
-          10
-        );
-      }
-    );
-  } catch (e) {
-    console.log(e);
-  }
-  setTimeout(() => {
-    getCurrency();
-  }, 15000);
+  const { data } = await axios.get(
+    "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
+  );
+  usdKrw = data.data.filter((currency) => currency.pair === "KRW_USD").rate;
 };
 const startBot = () => {
   if (
@@ -170,13 +152,12 @@ const startBot = () => {
     timer = setTimeout(() => {
       timer = null;
       startBot();
-    }, 3000);
+    }, 2000);
   }
   if (!timer) {
     timer = setTimeout(() => {
       timer = null;
       startBot();
-      getCurrency();
     }, 2000);
   }
 };

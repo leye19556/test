@@ -1,7 +1,7 @@
 import coinModel from "../models/coinModel";
 import axios from "axios";
 import WebSocket from "ws";
-import { client } from "websocket";
+//import { usdKrw } from "../noticeCoinGap";
 let wsBinance = null,
   wsBinanceState = null,
   wsUpbit = null,
@@ -113,10 +113,9 @@ const bithumbWS = async () => {
         .data
     ).slice(2);
     wsBithumb = new WebSocket(`wss://pubwss.bithumb.com/pub/ws`);
-    //setTimeout(() => {
     wsBithumb.onopen = () => {
-      console.log("t connected");
       if (wsBithumb !== null && wsBithumb.readyState === 1) {
+        console.log("t connected");
         const data = {
           type: "ticker",
           symbols: ["BTC_KRW", ...bithumbList.map((coin) => `${coin}_KRW`)],
@@ -142,11 +141,10 @@ const bithumbWS = async () => {
         wsBithumb = null;
       }
     };
+    wsBithumb.onerror = (e) => {
+      console.log(e);
+    };
   }
-  wsBithumb.onerror = (e) => {
-    console.log(e);
-  };
-  //}, 3000);
 };
 
 export const getTickers = async (req, res, next) => {
@@ -269,8 +267,9 @@ export const checkCoin = async (req, res, next) => {
 export const getCurrency = async (req, res, next) => {
   try {
     const { data } = await axios.get(
-      "https://www.freeforexapi.com/api/live?pairs=USDKRW"
+      "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
     );
+    //console.log(usdKrw);
     res.json(data);
   } catch (e) {
     console.log(e);
