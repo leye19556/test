@@ -21,6 +21,9 @@ const getCurrency = async () => {
     "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
   );
   usdKrw = data.data.filter((currency) => currency.pair === "KRW_USD").rate;
+  setTimeout(() => {
+    getCurrency();
+  }, 15000);
 };
 const startBot = () => {
   if (
