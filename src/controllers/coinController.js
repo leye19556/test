@@ -269,7 +269,6 @@ export const getCurrency = async (req, res, next) => {
     const { data } = await axios.get(
       "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
     );
-    //console.log(usdKrw);
     res.json(data);
   } catch (e) {
     console.log(e);
