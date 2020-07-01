@@ -31,7 +31,7 @@ const upbitWS = async () => {
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
       console.log("u connected");
-      if (wsUpbit !== null) {
+      if (wsUpbit !== null && wsUpbit.readyState === 1) {
         const data = [
           { ticket: "test" },
           {
@@ -81,18 +81,18 @@ const binanceWS = async () => {
       }
     };
     wsBinance.onmessage = (e) => {
-      //if (wsBinance.readyState === 1) {
-      const {
-        data: { s, c },
-      } = JSON.parse(e.data);
-      const symbol = s.slice(0, s.length - 3);
-      if (symbol === "BTCU") {
-        binanceBTC = parseFloat(c);
-        tickers2[s.slice(0, s.length - 4)] = parseFloat(c);
-      } else {
-        tickers2[symbol] = parseFloat(c);
+      if (wsBinance.readyState === 1) {
+        const {
+          data: { s, c },
+        } = JSON.parse(e.data);
+        const symbol = s.slice(0, s.length - 3);
+        if (symbol === "BTCU") {
+          binanceBTC = parseFloat(c);
+          tickers2[s.slice(0, s.length - 4)] = parseFloat(c);
+        } else {
+          tickers2[symbol] = parseFloat(c);
+        }
       }
-      //}
     };
     wsBinance.onclose = () => {
       if (ws !== null) {
