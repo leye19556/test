@@ -1,5 +1,4 @@
 export let ticker3 = {};
-export let 
 export const getBithumb = async () => {
   try {
     const {
