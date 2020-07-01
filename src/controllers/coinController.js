@@ -31,7 +31,7 @@ const upbitWS = async () => {
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
       console.log("u connected");
-      if (wsUpbit !== null && wsUpbit.readyState === 1) {
+      if (wsUpbit !== null) {
         const data = [
           { ticket: "test" },
           {
