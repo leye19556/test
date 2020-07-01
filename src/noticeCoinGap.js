@@ -156,13 +156,13 @@ const startBot = () => {
     timer = setTimeout(() => {
       timer = null;
       startBot();
-    }, 2000);
+    }, 1000);
   }
   if (!timer) {
     timer = setTimeout(() => {
       timer = null;
       startBot();
-    }, 2000);
+    }, 1000);
   }
 };
 startBot();
