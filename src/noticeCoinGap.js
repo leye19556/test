@@ -16,6 +16,7 @@ let percent = {};
 let timer = null,
   tickers = [];
 export let usdKrw = 0;
+
 const getCurrency = async () => {
   const { data } = await axios.get(
     "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"

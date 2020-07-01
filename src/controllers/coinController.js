@@ -105,6 +105,7 @@ const binanceWS = async () => {
     };
   }
 };
+
 //빗썸 소켓 연결
 const bithumbWS = async () => {
   if (wsBithumb === null) {
@@ -146,14 +147,25 @@ const bithumbWS = async () => {
     };
   }
 };
-
+/*const getBithumb = async () => {
+  try {
+    const {
+      data: { data },
+    } = await axios.get("https://api.bithumb.com/public/ticker/ALL");
+    Object.keys(data).forEach((coin) => {
+      tickers3[coin] = data[coin].closing_price;
+    });
+  } catch (e) {
+    console.log(e);
+  }
+};*/
 export const getTickers = async (req, res, next) => {
   try {
     coinList = (await coinModel.find())?.map((coin) => coin.name);
     if (coinList.length > 0) {
-      upbitWS();
-      binanceWS();
-      //bithumbWS();
+      if (Object.keys(tickers1).length === 0) upbitWS();
+      if (Object.keys(tickers2).length === 0) binanceWS();
+      if (Object.keys(tickers3).length === 0) bithumbWS();
     }
     const tickers = coinList.map((v) => {
       return {
