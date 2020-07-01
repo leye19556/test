@@ -41,24 +41,25 @@ const upbitWS = async () => {
         ];
         wsUpbit.send(JSON.stringify(data));
       }
-      wsUpbit.onmessage = (e) => {
-        if (wsUpbit.readyState === 1) {
-          const enc = new TextDecoder("utf-8");
-          const arr = new Uint8Array(e.data);
-          const { code, trade_price } = JSON.parse(enc.decode(arr));
-          const symbol = code.slice(code.indexOf("-") + 1, code.length);
-          if (symbol === "BTC") upbitBTCKrw = trade_price;
-          tickers1[symbol] = trade_price;
-        }
-      };
-      wsUpbit.onclose = () => {
-        if (wsUpbit !== null) {
-          wsUpbit.close();
-        }
-      };
-      wsUpbit.onerror = (e) => {
-        console.log(e);
-      };
+    };
+    wsUpbit.onmessage = (e) => {
+      if (wsUpbit.readyState === 1) {
+        const enc = new TextDecoder("utf-8");
+        const arr = new Uint8Array(e.data);
+        const { code, trade_price } = JSON.parse(enc.decode(arr));
+        const symbol = code.slice(code.indexOf("-") + 1, code.length);
+        if (symbol === "BTC") upbitBTCKrw = trade_price;
+        tickers1[symbol] = trade_price;
+      }
+    };
+    wsUpbit.onclose = () => {
+      if (wsUpbit !== null) {
+        wsUpbit.close();
+        wsUpbit = null;
+      }
+    };
+    wsUpbit.onerror = (e) => {
+      console.log(e);
     };
   }
 };
