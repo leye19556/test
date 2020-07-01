@@ -43,7 +43,7 @@ const upbitWS = async () => {
       }
     };
     wsUpbit.onmessage = (e) => {
-      if (wsUpbit.readyState === 1) {
+      if (wsUpbit !== null && wsUpbit.readyState === 1) {
         const enc = new TextDecoder("utf-8");
         const arr = new Uint8Array(e.data);
         const { code, trade_price } = JSON.parse(enc.decode(arr));
