@@ -162,7 +162,8 @@ const bithumbWS = async () => {
 };*/
 export const getTickers = async (req, res, next) => {
   try {
-    coinList = (await coinModel.find())?.map((coin) => coin.name);
+    if (coinList.length === 0)
+      coinList = (await coinModel.find())?.map((coin) => coin.name);
     if (coinList.length > 0) {
       if (Object.keys(tickers1).length === 0) upbitWS();
       if (Object.keys(tickers2).length === 0) binanceWS();
