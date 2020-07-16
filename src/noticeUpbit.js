@@ -16,18 +16,40 @@ const upbitListing = async () => {
     const {
       data: { data },
     } = await axios.get(
-      "https://api-manager.upbit.com/api/v1/notices/search?search=%5B%EA%B1%B0%EB%9E%98%5D&page=1&per_page=20&before=&target=non_ios&thread_name=general"
+      "https://api-manager.upbit.com/api/v1/notices?page=1&per_page=20&thread_name=general"
     );
     const notices = data.list;
     for (let i = 0; i < notices.length; i++) {
-      const symbol = notices[i].title.slice(
-        notices[i].title.lastIndexOf(" ") + 1,
-        notices[i].title.length - 1
-      );
-      const notice = await upbitNoticeModel.findOne({
-        coin: symbol,
-      });
-      if (!notice) {
+      if (
+        notices[i].title.includes("[거래] 원화") ||
+        (notices[i].title.includes("[이벤트]") &&
+          notices[i].title.includes("원화마켓"))
+      ) {
+        if (
+          notices[i].title.includes("[거래] 원화") &&
+          notices[i].title.includes("신규")
+        ) {
+          const title = notices[i].title;
+          const tokens = title
+            .slice(title.indexOf("(") + 1, title.indexOf(")") - 1)
+            .split(" ");
+          console.log(tokens);
+        } else if (
+          notices[i].title.includes("[이벤트]") &&
+          notices[i].title.includes("원화마켓")
+        ) {
+          console.log(notices[i].title);
+        }
+      }
+      //const symbol = notices[i].title.slice(
+      //notices[i].title.lastIndexOf(" ") + 1,
+      //notices[i].title.length - 1
+      //);
+      //const notice = await upbitNoticeModel.findOne({
+      //coin: symbol,
+      //});
+
+      /*if (!notice) {
         //console.log("create");
         await upbitNoticeModel.create({
           title: notices[i].title,
@@ -58,7 +80,7 @@ const upbitListing = async () => {
           limitPrice,
           askPrice * askQty
         );*/
-            while (true) {
+      /*while (true) {
               const { askPrice: price, askQty: qty } = await checkLatestPrice(
                 symbol,
                 "binance"
@@ -96,7 +118,7 @@ const upbitListing = async () => {
             );
           }
         }
-      }
+      }*/
     }
   } catch (e) {
     console.log(e);

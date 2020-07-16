@@ -197,6 +197,7 @@ const socket = (io) => {
     socket.emit("receive", () => {});
     socket.on("disconnect", () => {
       console.log("disconnected");
+      socket.emit("disconnected");
     });
   });
 };
