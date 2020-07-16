@@ -20,13 +20,19 @@ const userList = {};
 let flag = 1;
 export let binance = null;
 export let upbit = null;
-export const checkExistOnBinance = async (symbol) => {
-  const c = await binance.bookTickers();
-  if (
-    Object.entries(c).filter((coin) => coin[0] === `${symbol}BTC`).length === 0
-  )
-    return false;
-  return true;
+export const checkExist = async (symbol, type) => {
+  if (type === "binance") {
+    const c = await binance.bookTickers();
+    if (
+      Object.entries(c).filter((coin) => coin[0] === `${symbol}BTC`).length ===
+      0
+    )
+      return false;
+    return true;
+  } else {
+    const c = "";
+    return true;
+  }
 };
 export const postKey = async (req, res, next) => {
   try {

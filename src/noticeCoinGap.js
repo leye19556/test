@@ -11,7 +11,7 @@ import {
   tickers3,
   coinList,
   getPercent,
-} from "./controllers/coinController";
+} from "./socket";
 let percent = {};
 let timer = null,
   tickers = [];

@@ -5,7 +5,7 @@ import {
   binanceTrade,
   checkLatestPrice,
   getBinanceBalance,
-  checkExistOnBinance,
+  checkExist,
   binance,
 } from "./controllers/TradeController";
 let timer = null;
@@ -38,7 +38,7 @@ const upbitListing = async () => {
         });
         sendMessage(`업비트 업데이트: ${notices[i].title}`, true, "upbit");
         if (binance) {
-          if ((await checkExistOnBinance(symbol)) === true) {
+          if ((await checkExist(symbol, "binance")) === true) {
             const {
               bidPrice,
               bidQty,
@@ -88,6 +88,12 @@ const upbitListing = async () => {
                 break;
               }
             }
+          } else {
+            sendMessage(
+              `[${symbol}은 바이낸스에 상장하지 않은 코인 입니다]`,
+              true,
+              "upbit"
+            );
           }
         }
       }

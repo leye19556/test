@@ -6,7 +6,8 @@ const token = process.env.PRODUCTION
   : process.env.LOCAL_TELEGRAM_BOT_API;
 const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
 const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
-export const chatId = [-1001207277600]; //[1258091981];
+const groupKey = process.env.GROUP_KEY;
+export const chatId = [groupKey]; //[-1001207277600]; //[1258091981];
 //[1258091981,401733277, 302830051];
 const bot = new TelegramBot(token, { polling: true });
 const upbitBot = new TelegramBot(upbitToken, { polling: true });
