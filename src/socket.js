@@ -204,10 +204,10 @@ const socket = (io) => {
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       user = user.filter((id) => id !== socket.id);
-      //if (reason === "io server disconnect") {
-      // the disconnection was initiated by the server, you need to reconnect manually
-      //socket.connect();
-      //}
+      if (reason === "io server disconnect") {
+        //the disconnection was initiated by the server, you need to reconnect manually
+        socket.connect();
+      }
       socket.emit("disconnected");
     });
   });
