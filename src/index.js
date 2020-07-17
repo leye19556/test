@@ -25,7 +25,7 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://leye195.github.io/CoinAT-Front"],
+    origin: ["http://localhost:3000", "https://leye195.github.io"],
     credentials: true,
   })
 );
