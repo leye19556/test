@@ -158,10 +158,11 @@ const bithumbWS = async () => {
   }
 };
 const socket = (io) => {
+  //io.set("origin", "*:*");
   const connect = io.on("connect", (socket) => {
     console.log("socket connected");
     socketConnected = true;
-    if (user.indexOf(socket.id) !== -1) {
+    if (user.indexOf(socket.id) === -1) {
       user.push(socket.id);
       socket.emit("welcome");
     }
