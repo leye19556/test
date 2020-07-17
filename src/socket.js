@@ -161,7 +161,7 @@ const socket = (io) => {
   const connect = io.on("connect", (socket) => {
     console.log("socket connected");
     socketConnected = true;
-    if (socket.indexOf(socket.id) !== -1) {
+    if (user.indexOf(socket.id) !== -1) {
       user.push(socket.id);
       socket.emit("welcome");
     }
@@ -204,10 +204,10 @@ const socket = (io) => {
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       user = user.filter((id) => id !== socket.id);
-      if (reason === "io server disconnect") {
-        //the disconnection was initiated by the server, you need to reconnect manually
-        socket.connect();
-      }
+      //if (reason === "io server disconnect") {
+      //the disconnection was initiated by the server, you need to reconnect manually
+      //socket.connect();
+      //}
       socket.emit("disconnected");
     });
   });
