@@ -7,8 +7,7 @@ const token = process.env.PRODUCTION
 const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
 const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
 const groupKey = process.env.GROUP_KEY;
-export const chatId = [groupKey]; //[-1001207277600]; //[1258091981];
-//[1258091981,401733277, 302830051];
+const chatId = [groupKey]; //[1258091981];
 const bot = new TelegramBot(token, { polling: true });
 const upbitBot = new TelegramBot(upbitToken, { polling: true });
 const binanceBot = new TelegramBot(binanceToken, { polling: true });
@@ -71,6 +70,7 @@ export const postMessage = (req, res, next) => {
     next(e);
   }
 };
+
 export const postCancelMessage = (req, res, next) => {
   try {
     const msg = `------알림 취소------\n`;

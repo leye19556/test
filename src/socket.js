@@ -12,6 +12,8 @@ let thumbBTCKrw = 0;
 let wsBinance = null,
   wsUpbit = null,
   wsBithumb = null;
+let user = [];
+export let socketConnected = false;
 export const getPercent = (x, y) => {
   return ((x - y) / y) * 100;
 };
@@ -158,7 +160,11 @@ const bithumbWS = async () => {
 const socket = (io) => {
   const connect = io.on("connect", (socket) => {
     console.log("socket connected");
-    socket.emit("welcome");
+    socketConnected = true;
+    if (socket.indexOf(socket.id) !== -1) {
+      user.push(socket.id);
+      socket.emit("welcome");
+    }
     if (coinList.length === 0) getCoinList();
 
     socket.on("send", () => {
@@ -195,8 +201,13 @@ const socket = (io) => {
       }
     });
     socket.emit("receive", () => {});
-    socket.on("disconnect", () => {
-      console.log("disconnected");
+    socket.on("disconnect", (reason) => {
+      socketConnected = false;
+      user = user.filter((id) => id !== socket.id);
+      //if (reason === "io server disconnect") {
+      // the disconnection was initiated by the server, you need to reconnect manually
+      //socket.connect();
+      //}
       socket.emit("disconnected");
     });
   });

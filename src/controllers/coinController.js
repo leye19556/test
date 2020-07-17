@@ -1,17 +1,6 @@
 import coinModel from "../models/coinModel";
 import axios from "axios";
-/*const getBithumb = async () => {
-  try {
-    const {
-      data: { data },
-    } = await axios.get("https://api.bithumb.com/public/ticker/ALL");
-    Object.keys(data).forEach((coin) => {
-      tickers3[coin] = data[coin].closing_price;
-    });
-  } catch (e) {
-    console.log(e);
-  }
-};*/
+
 export const getTickers = async (req, res, next) => {
   try {
     res.json([]);
@@ -29,6 +18,7 @@ export const getCoins = async (req, res, next) => {
     next(e);
   }
 };
+
 export const postCoin = async (req, res, next) => {
   try {
     const {
@@ -52,6 +42,7 @@ export const postCoin = async (req, res, next) => {
     next(e);
   }
 };
+
 export const deleteCoin = async (req, res, next) => {
   try {
     const {
@@ -73,6 +64,7 @@ export const deleteCoin = async (req, res, next) => {
     next(e);
   }
 };
+
 export const editCoin = async (req, res, next) => {
   try {
     const {
@@ -96,6 +88,7 @@ export const checkCoin = async (req, res, next) => {
     next(e);
   }
 };
+
 export const getCurrency = async (req, res, next) => {
   try {
     const { data } = await axios.get(

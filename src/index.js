@@ -23,7 +23,11 @@ const app = express();
 app.set("view engine", "pug");
 app.set("views", path.join(__dirname, "views"));
 
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+  })
+);
 app.use(helmet());
 app.use(morgan("dev"));
 app.use("/static", express.static(path.join(__dirname, "static")));

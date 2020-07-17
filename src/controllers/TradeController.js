@@ -20,6 +20,7 @@ const userList = {};
 let flag = 1;
 export let binance = null;
 export let upbit = null;
+
 export const checkExist = async (symbol, type) => {
   if (type === "binance") {
     const c = await binance.bookTickers();
@@ -34,6 +35,7 @@ export const checkExist = async (symbol, type) => {
     return true;
   }
 };
+
 export const postKey = async (req, res, next) => {
   try {
     const {
@@ -82,6 +84,7 @@ export const postBinanceKey = (req, res, next) => {
     next(e);
   }
 };
+
 export const postUpbitKey = (req, res, next) => {
   try {
     const {
@@ -109,11 +112,13 @@ export const getUpbitBalance = async () => {
   });
   return r;
 };
+
 export const getBinanceBalance = async () => {
   //binance 지갑 체크
   const r = await binance.balance();
   return r;
 };
+
 export const checkBinancePrice = async (symbol, type) => {
   const { asks, bids } = await binance.depth(`${symbol}BTC`);
   let obj = {};
@@ -129,6 +134,7 @@ export const checkBinancePrice = async (symbol, type) => {
   }
   return obj;
 };
+
 export const checkLatestPrice = async (symbol, from) => {
   let obj = {};
   if (from === "binance") {
@@ -209,6 +215,7 @@ const checkTradable = async (symbol, type, q) => {
     return false;
   }
 };
+
 const getUpbitBidPrice = async (symbol) => {
   const { data } = await axios.get(
     `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
@@ -216,6 +223,7 @@ const getUpbitBidPrice = async (symbol) => {
   const info = data[0].orderbook_units[0];
   return { price: info.bid_price, quantity: info.bid_size };
 };
+
 export const binanceTrade = async (symbol, side, q) => {
   if (side === "ask") {
     //코인 매도
@@ -242,6 +250,7 @@ export const binanceTrade = async (symbol, side, q) => {
   }
   return flag;
 };
+
 export const upbitTrade = async (symbol, side, q) => {
   let body = {
     market: `KRW-${symbol}`,
