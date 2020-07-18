@@ -1,6 +1,6 @@
 # CoinAT-Back
 
-Nodejs,Express,MongoDB,
+Nodejs,Express,MongoDB,Socket.io
 
 ### ToDo
 
