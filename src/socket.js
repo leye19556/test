@@ -162,10 +162,10 @@ const socket = (io) => {
   const connect = io.on("connect", (socket) => {
     console.log("socket connected");
     socketConnected = true;
-    if (user.indexOf(socket.id) === -1) {
-      user.push(socket.id);
-      socket.emit("welcome");
-    }
+    //if (user.indexOf(socket.id) === -1) {
+    //user.push(socket.id);
+    socket.emit("welcome");
+    //}
     if (coinList.length === 0) getCoinList();
 
     socket.on("send", () => {
