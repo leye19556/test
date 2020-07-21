@@ -31,8 +31,11 @@ export const checkExist = async (symbol, type) => {
       return false;
     return true;
   } else {
-    const c = "";
-    return true;
+    const { data } = await axios.get("https://api.upbit.com/v1/market/all");
+    for (let i = 0; i < data.length; i++) {
+      if (data[i].market.includes(`KRW-${symbol}`)) return true;
+    }
+    return false;
   }
 };
 
