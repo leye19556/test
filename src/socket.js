@@ -37,7 +37,7 @@ const upbitWS = async () => {
     wsUpbit = new WebSocket("wss://api.upbit.com/websocket/v1");
     wsUpbit.binaryType = "arraybuffer";
     wsUpbit.onopen = () => {
-      console.log("u connected");
+      //console.log("u connected");
       if (wsUpbit !== null && wsUpbit.readyState === 1) {
         const data = [
           { ticket: "test" },
@@ -160,7 +160,7 @@ const bithumbWS = async () => {
 const socket = (io) => {
   //io.set("origin", "*:*");
   const connect = io.on("connect", (socket) => {
-    console.log("socket connected");
+    //console.log("socket connected");
     socketConnected = true;
     //if (user.indexOf(socket.id) === -1) {
     //user.push(socket.id);

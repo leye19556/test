@@ -25,7 +25,7 @@ const extractSymbol = (title) => {
 };
 const binanceListing = async () => {
   try {
-    console.log("binance checking");
+    //console.log("binance checking");
     const browser = await puppeteer.launch({
       headless: true,
       args: ["--no-sandbox", "--disable-setuid-sandbox"],

@@ -61,7 +61,7 @@ const bidBinance = async (symbol) => {
 };
 const upbitListing = async () => {
   try {
-    console.log("upbit checking");
+    //console.log("upbit checking");
     const {
       data: { data },
     } = await axios.get(
