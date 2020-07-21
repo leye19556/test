@@ -6,20 +6,25 @@ import queryString from "querystring";
 import axios from "axios";
 import Binance from "node-binance-api";
 import { sendMessage } from "./botController";
+import dotenv from "dotenv";
+dotenv.config();
 /**
  * 햔재 가격의 코인 양이 설정된 값이랑 같거나 이상일 경우를 확인 해주며 거래 진행
  * 적을 거래 취소, 거래 코인은 여러개 설정할수 있게,
  * upbit는 krw, 바이낸스는 btc
  */
 
-let UPBIT_API = null,
-  UPBIT_SEC = null,
-  BINANCE_API = null,
-  BINANCE_SEC = null;
+let UPBIT_API = process.env.UPBIT_API,
+  UPBIT_SEC = process.env.UPBIT_SEC,
+  BINANCE_API = process.env.BINANCE_API,
+  BINANCE_SEC = process.env.BINANCE_SEC;
 const userList = {};
 let flag = 1;
-export let binance = null;
-export let upbit = null;
+export let binance = new Binance({
+  APIKEY: UPBIT_API,
+  APISECRET: UPBIT_SEC,
+}); //null;
+export let upbit = { UPBIT_API, UPBIT_SEC };
 
 export const checkExist = async (symbol, type) => {
   if (type === "binance") {
@@ -44,7 +49,7 @@ export const postKey = async (req, res, next) => {
     const {
       body: { api1, sec1, api2, sec2, type, uid },
     } = req;
-    if (type === "cancel") {
+    /*if (type === "cancel") {
       delete userList[uid];
       binanae = null;
       upbit = null;
@@ -65,7 +70,7 @@ export const postKey = async (req, res, next) => {
         UPBIT: { UPBIT_API, UPBIT_SEC },
         BINANCE: { BINANCE_API, BINANCE_SEC, binance },
       };
-    }
+    }*/
     res.end();
   } catch (e) {
     next(e);
