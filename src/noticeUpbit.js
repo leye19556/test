@@ -118,7 +118,6 @@ const upbitListing = async () => {
             title: title,
             coin: symbol,
           });
-          //console.log(title, symbol);
           if (!notice) {
             await upbitNoticeModel.create({
               title: title,
