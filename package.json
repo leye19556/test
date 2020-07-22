@@ -11,7 +11,7 @@
     "copyAll": "cp -R src/static build && cp -R src/views build",
     "build": "npm run build:server && npm run build:assets && npm run copyAll",
     "prebuild": "rm -rf build",
-    "start": "PRODUCTION=true node  --max_old_space_size=460 --gc_interval=100 build/index.js",
+    "start": "PRODUCTION=true node --optimize_for_size --max_old_space_size=460 --gc_interval=100 build/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
