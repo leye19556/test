@@ -46,24 +46,6 @@ export const postMessage = (req, res, next) => {
       coinPercent = {};
       sendMessage(`------알림 취소------\n`, true);
     }
-    /*let msg = `[${coinInfo.symbol}]`;
-    if (
-      coinInfo.upbit !== undefined &&
-      coinInfo.percentUp !== undefined &&
-      coinInfo.percentUp !== -100
-    ) {
-      msg += `업비트:${coinInfo.upbit}₩ 바이낸스:${coinInfo.binance}₩  (${coinInfo.percentUp}%) `;
-    }
-    if (
-      coinInfo.bithumb !== undefined &&
-      coinInfo.percentBit !== undefined &&
-      coinInfo.percentBit !== -100
-    ) {
-      msg += `빗썸:${coinInfo.bithumb}₩ 바이낸스:${
-        coinInfo.binance
-      }₩ (${`${coinInfo.percentBit}%`})`;
-    }
-    sendMessage(msg, true);*/
     res.end();
   } catch (e) {
     console.error(e);
