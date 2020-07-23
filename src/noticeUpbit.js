@@ -76,17 +76,18 @@ const upbitListing = async () => {
       ) {
         if (
           notices[i].title.includes("[거래] 원화") &&
-          notices[i].title.includes("신규")
+          notices[i].title.includes("신규") &&
+          notices[i].title.includes("상장")
         ) {
           const title = notices[i].title;
           const symbols = title
             .slice(title.indexOf("(") + 1, title.indexOf(")"))
             .split(/[,\sㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g)
             .filter((w) => w.length !== 0);
+          sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
           symbols.forEach(async (symbol) => {
             //console.log(notices[i].title, symbol);
             const notice = await upbitNoticeModel.findOne({
-              title: title,
               coin: symbol,
             });
             if (!notice) {
@@ -97,11 +98,6 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              sendMessage(
-                `업비트 업데이트: ${notices[i].title}`,
-                true,
-                "upbit"
-              );
               await bidBinance(symbol);
             }
           });
@@ -114,8 +110,8 @@ const upbitListing = async () => {
             .slice(title.indexOf("(") + 1, title.indexOf(")"))
             .split(/[,\sㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g)
             .filter((w) => w.length !== 0)[0];
+          sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
           const notice = await upbitNoticeModel.findOne({
-            title: title,
             coin: symbol,
           });
           if (!notice) {
@@ -126,7 +122,6 @@ const upbitListing = async () => {
               createdAt: notices[i].created_at,
               checked: true,
             });
-            sendMessage(`업비트 업데이트: ${notices[i].title}`, true, "upbit");
             await bidBinance(symbol);
           }
         }
