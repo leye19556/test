@@ -99,7 +99,7 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              await bidBinance(symbol);
+              if (title.endsWith(")")) await bidBinance(symbol);
             }
           });
         } else if (
