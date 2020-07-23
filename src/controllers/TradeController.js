@@ -265,7 +265,11 @@ export const binanceTrade = async (symbol, side, q) => {
       } else {
         console.info("Market Buy response", response);
         console.info("order id: " + response.orderId);
-        sendMessage(JSON.stringify(response), true);
+        sendMessage(
+          `OrderId:${response.orderId} Symbol:${response.symbol} Price:${response.fills.price} Quantity:${response.fills.qty}`,
+          true,
+          "upbit"
+        );
       }
     });
   }
