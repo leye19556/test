@@ -19,7 +19,7 @@ const bidBinance = async (symbol) => {
       );
       let balance = await getBinanceBalance(),
         limitPrice = parseFloat(
-          (parseFloat(askPrice) * 0.05 + parseFloat(askPrice)).toFixed(8)
+          (parseFloat(askPrice) * 0.03 + parseFloat(askPrice)).toFixed(8)
         );
       sendMessage(`[바이낸스] ${symbol}매수 시도`, true, "upbit");
       while (true) {
