@@ -113,8 +113,8 @@ const upbitListing = async () => {
             .filter((w) => w.length !== 0)[0];
           const notice = await upbitNoticeModel.findOne({
             coin: symbol,
+            title: title,
           });
-          //console.log(title, symbol);
           if (!notice) {
             sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
             await upbitNoticeModel.create({
