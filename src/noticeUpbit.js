@@ -102,7 +102,7 @@ const upbitListing = async () => {
                 true,
                 "upbit"
               );
-              bidBinance(symbol);
+              await bidBinance(symbol);
             }
           });
         } else if (
@@ -127,7 +127,7 @@ const upbitListing = async () => {
               checked: true,
             });
             sendMessage(`업비트 업데이트: ${notices[i].title}`, true, "upbit");
-            bidBinance(symbol);
+            await bidBinance(symbol);
           }
         }
       }

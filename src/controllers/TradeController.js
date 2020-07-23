@@ -21,26 +21,30 @@ let UPBIT_API = process.env.UPBIT_API,
 const userList = {};
 let flag = 1;
 export let binance = new Binance({
-  APIKEY: UPBIT_API,
-  APISECRET: UPBIT_SEC,
+  APIKEY: BINANCE_API,
+  APISECRET: BINANCE_SEC,
 }); //null;
 export let upbit = { UPBIT_API, UPBIT_SEC };
 
 export const checkExist = async (symbol, type) => {
-  if (type === "binance") {
-    const c = await binance.bookTickers();
-    if (
-      Object.entries(c).filter((coin) => coin[0] === `${symbol}BTC`).length ===
-      0
-    )
+  try {
+    if (type === "binance") {
+      const c = await binance.bookTickers();
+      if (
+        Object.entries(c).filter((coin) => coin[0] === `${symbol}BTC`)
+          .length === 0
+      )
+        return false;
+      return true;
+    } else {
+      const { data } = await axios.get("https://api.upbit.com/v1/market/all");
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].market.includes(`KRW-${symbol}`)) return true;
+      }
       return false;
-    return true;
-  } else {
-    const { data } = await axios.get("https://api.upbit.com/v1/market/all");
-    for (let i = 0; i < data.length; i++) {
-      if (data[i].market.includes(`KRW-${symbol}`)) return true;
     }
-    return false;
+  } catch (e) {
+    console.log(e);
   }
 };
 
@@ -123,8 +127,13 @@ export const getUpbitBalance = async () => {
 
 export const getBinanceBalance = async () => {
   //binance 지갑 체크
-  const r = await binance.balance();
-  return r;
+  try {
+    const r = await binance.balance();
+    console.log("??");
+    return r;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const checkBinancePrice = async (symbol, type) => {
