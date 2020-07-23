@@ -20,8 +20,6 @@ import socketEvent from "./socket";
 import "@babel/polyfill";
 dotenv.config();
 const app = express();
-app.set("view engine", "pug");
-app.set("views", path.join(__dirname, "views"));
 
 app.use(helmet());
 app.use(morgan("dev"));
@@ -36,6 +34,9 @@ app.use(
   })
 );
 
+app.set("view engine", "pug");
+app.set("views", path.join(__dirname, "views"));
+
 app.use("/", globalRoute);
 app.use("/coin", coinRoute);
 app.use("/coins", coinsRoute);
@@ -44,10 +45,6 @@ app.use("/trade", tradeRoute);
 app.use("/admin", adminRoute);
 const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`✅ express is running on port:${process.env.PORT || 3000}`);
-});
-server.on("clientError", (err, socket) => {
-  console.error(err);
-  socket.end("HTTP/1.1 400 Bad Request\r\n\r\n");
 });
 
 const socket = socketIO(server);
