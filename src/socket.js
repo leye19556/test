@@ -159,6 +159,7 @@ const bithumbWS = async () => {
 };
 const socket = (io) => {
   //io.set("origin", "*:*");
+  io.set("transports", ["websocket"]);
   const connect = io.on("connect", (socket) => {
     //console.log("socket connected");
     socketConnected = true;
