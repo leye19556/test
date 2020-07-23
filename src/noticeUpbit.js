@@ -84,6 +84,7 @@ const upbitListing = async () => {
             .slice(title.indexOf("(") + 1, title.indexOf(")"))
             .split(/[,\sㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g)
             .filter((w) => w.length !== 0);
+          //console.log(title, symbols);
           symbols.forEach(async (symbol) => {
             //console.log(notices[i].title, symbol);
             const notice = await upbitNoticeModel.findOne({
@@ -98,7 +99,7 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              //await bidBinance(symbol);
+              await bidBinance(symbol);
             }
           });
         } else if (
@@ -113,6 +114,7 @@ const upbitListing = async () => {
           const notice = await upbitNoticeModel.findOne({
             coin: symbol,
           });
+          //console.log(title, symbol);
           if (!notice) {
             sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
             await upbitNoticeModel.create({
