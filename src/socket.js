@@ -1,7 +1,7 @@
 import axios from "axios";
 import WebSocket from "ws";
 import coinModel from "./models/coinModel";
-
+import { checkBot } from "./controllers/botController";
 export let coinList = [];
 export let tickers1 = {};
 export let tickers2 = {};
@@ -103,7 +103,7 @@ const binanceWS = async () => {
       }
     };
     wsBinance.onclose = () => {
-      if (ws !== null) {
+      if (wsBinance !== null) {
         wsBinance.close();
         wsBinance = null;
       }
@@ -148,6 +148,7 @@ const bithumbWS = async () => {
     };
     wsBithumb.onclose = () => {
       if (wsBithumb !== null) {
+        console.log("..");
         wsBithumb.close();
         wsBithumb = null;
       }
@@ -206,10 +207,11 @@ const socket = (io) => {
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       user = user.filter((id) => id !== socket.id);
-      //if (reason === "io server disconnect") {
-      //the disconnection was initiated by the server, you need to reconnect manually
-      //socket.connect();
-      //}
+      if (checkBot === false) {
+        wsBinance.close();
+        wsUpbit.close();
+        wsBithumb.close();
+      }
       socket.emit("disconnected");
     });
   });
