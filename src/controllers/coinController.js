@@ -89,14 +89,19 @@ export const checkCoin = async (req, res, next) => {
   }
 };
 
-export const getCurrency = async (req, res, next) => {
-  try {
-    const { data } = await axios.get(
+export const getCurrency = (req, res, next) => {
+  axios
+    .get(
       "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
-    );
-    res.json(data);
-  } catch (e) {
-    console.log(e);
-    next(e);
-  }
+    )
+    .then((response) => {
+      if (response.status === 200) {
+        res.json(response.data);
+      } else {
+        res.json([]);
+      }
+    })
+    .catch((e) => {
+      res.json([]);
+    });
 };
