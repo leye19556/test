@@ -158,14 +158,16 @@ const bithumbWS = async () => {
     };
   }
 };
+
+const userList = [];
 const socket = (io) => {
   //io.set("origin", "*:*");
   io.set("transports", ["websocket"]);
   const connect = io.on("connect", (socket) => {
     //console.log("socket connected");
     socketConnected = true;
-    //if (user.indexOf(socket.id) === -1) {
-    //user.push(socket.id);
+
+    if (userList.indexOf(socket.id) === -1) userList.push(socket.id);
     socket.emit("welcome");
     //}
     if (coinList.length === 0) getCoinList();
@@ -206,8 +208,8 @@ const socket = (io) => {
     socket.emit("receive", () => {});
     socket.on("disconnect", (reason) => {
       socketConnected = false;
-      user = user.filter((id) => id !== socket.id);
-      if (checkBot === false) {
+      userList = userList.filter((id) => id !== socket.id);
+      if (checkBot === false && userList.length === 0) {
         wsBinance.close();
         wsUpbit.close();
         wsBithumb.close();
