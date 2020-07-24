@@ -7,12 +7,10 @@ export let tickers1 = {};
 export let tickers2 = {};
 export let tickers3 = {};
 export let upbitBTCKrw = 0;
-let binanceBTC = 0;
-let thumbBTCKrw = 0;
-let wsBinance = null,
-  wsUpbit = null,
-  wsBithumb = null;
-let user = [];
+let wsBinance = null;
+let wsUpbit = null;
+let wsBithumb = null;
+let userList = [];
 export let socketConnected = false;
 export const getPercent = (x, y) => {
   return ((x - y) / y) * 100;
@@ -159,7 +157,6 @@ const bithumbWS = async () => {
   }
 };
 
-const userList = [];
 const socket = (io) => {
   //io.set("origin", "*:*");
   io.set("transports", ["websocket"]);
