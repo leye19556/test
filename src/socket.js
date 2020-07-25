@@ -209,9 +209,9 @@ const socket = (io) => {
       socketConnected = false;
       userList = userList.filter((id) => id !== socket.id);
       if (checkBot === false && userList.length === 0) {
-        wsBinance.close();
-        wsUpbit.close();
-        wsBithumb.close();
+        if (wsBinance !== null) wsBinance.close();
+        if (wsUpbit !== null) wsUpbit.close();
+        if (wsBithumb !== null) wsBithumb.close();
       }
       socket.emit("disconnected");
     });
