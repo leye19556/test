@@ -103,6 +103,7 @@ export const getCurrency = (req, res, next) => {
       }
     })
     .catch((e) => {
+      console.log(e);
       res.json([]);
     });
 };
