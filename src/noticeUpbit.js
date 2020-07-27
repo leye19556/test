@@ -103,7 +103,7 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              //if (title.endsWith(")")) await bidBinance(symbol);
+              if (title.endsWith(")")) await bidBinance(symbol);
             }
           });
         } else if (
@@ -119,24 +119,26 @@ const upbitListing = async () => {
             .slice(title.indexOf("(") + 1, title.indexOf(")"))
             .split(/[,\sㄱ-ㅎ|ㅏ-ㅣ|가-힣]/g)
             .filter((w) => w.length !== 0)[0];
-          const notice = await upbitNoticeModel.findOne({
-            coin: symbol,
-          });
           if (
-            !notice &&
             moment().format("YYYY-MM-DD HH:mm:00") ===
-              moment(notices[i].created_at).format("YYYY-MM-DD HH:mm:00")
+            moment(notices[i].created_at).format("YYYY-MM-DD HH:mm:00")
           ) {
-            sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
-            await upbitNoticeModel.create({
-              title: title,
+            const notice = await upbitNoticeModel.findOne({
               coin: symbol,
-              keyword: "[이벤트]",
-              updatedAt: notices[i].updated_at,
-              createdAt: notices[i].created_at,
-              checked: true,
             });
-            //await bidBinance(symbol);
+            if (!notice) {
+              sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
+              await upbitNoticeModel.create({
+                title: title,
+                coin: symbol,
+                keyword: "[이벤트]",
+                updatedAt: notices[i].updated_at,
+                createdAt: notices[i].created_at,
+                checked: true,
+              });
+              await bidBinance(symbol);
+            } else if (notice.title !== title) {
+            }
           }
         }
       }
