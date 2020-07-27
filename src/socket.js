@@ -207,11 +207,11 @@ const socket = (io) => {
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       userList = userList.filter((id) => id !== socket.id);
-      if (checkBot === false && userList.length === 0) {
-        if (wsBinance !== null) wsBinance.close();
-        if (wsUpbit !== null) wsUpbit.close();
-        if (wsBithumb !== null) wsBithumb.close();
-      }
+      //if (checkBot === false && userList.length === 0) {
+      //if (wsBinance !== null) wsBinance.close();
+      //if (wsUpbit !== null) wsUpbit.close();
+      //if (wsBithumb !== null) wsBithumb.close();
+      //}
       socket.emit("disconnected");
     });
   });
