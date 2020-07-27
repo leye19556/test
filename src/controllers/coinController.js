@@ -95,6 +95,7 @@ export const getCurrency = (req, res, next) => {
       "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
     )
     .then((response) => {
+      console.log(response.status);
       if (response.status === 200) {
         res.json(response.data);
       } else {
