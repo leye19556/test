@@ -96,8 +96,9 @@ export const getCurrency = async (req, res, next) => {
     );
     if (response.status === 200) {
       res.json(response.data);
+    } else {
+      res.json([]);
     }
-    res.json([]);
   } catch (e) {
     console.log(e);
     res.json([]);
