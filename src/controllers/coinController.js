@@ -94,7 +94,7 @@ export const getCurrency = (req, res, next) => {
     .get(
       "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency",
       {
-        timeout: 1000,
+        timeout: 30000,
       }
     )
     .then((response) => {
