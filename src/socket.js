@@ -1,7 +1,6 @@
 import axios from "axios";
 import WebSocket from "ws";
 import coinModel from "./models/coinModel";
-import { checkBot } from "./controllers/botController";
 export let coinList = [];
 export let tickers1 = {};
 export let tickers2 = {};
@@ -21,9 +20,9 @@ const getCoinList = async () => {
   if (coinList.length === 0)
     coinList = (await coinModel.find())?.map((coin) => coin.name);
   if (coinList.length > 0) {
-    /*if (Object.keys(tickers1).length === 0)*/ upbitWS();
-    /* if (Object.keys(tickers2).length === 0)*/ binanceWS();
-    /* if (Object.keys(tickers3).length === 0)*/ bithumbWS();
+    upbitWS();
+    binanceWS();
+    bithumbWS();
   }
 };
 //업비트 소켓 연결
@@ -206,11 +205,11 @@ const socket = (io) => {
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       userList = userList.filter((id) => id !== socket.id);
-      //if (checkBot === false && userList.length === 0) {
-      //if (wsBinance !== null) wsBinance.close();
-      //if (wsUpbit !== null) wsUpbit.close();
-      //if (wsBithumb !== null) wsBithumb.close();
-      //}
+      if (userList.length === 0) {
+        if (wsBinance !== null) wsBinance.close();
+        if (wsUpbit !== null) wsUpbit.close();
+        if (wsBithumb !== null) wsBithumb.close();
+      }
       socket.emit("disconnected");
     });
   });

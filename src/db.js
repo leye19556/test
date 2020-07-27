@@ -6,7 +6,7 @@ const u = process.env.PRODUCTION
   : process.env.LOCAL_DB;
 
 mongoose.connect(
-  process.env.PRODUCTION ? process.env.PROD_MONGO_DB : process.env.LOCAL_DB,
+  /*process.env.PRODUCTION ?*/ process.env.PROD_MONGO_DB, //: process.env.LOCAL_DB,
   {
     useNewUrlParser: true,
     useFindAndModify: false,

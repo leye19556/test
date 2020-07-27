@@ -6,14 +6,29 @@ import {
   binanceTrade,
   checkLatestPrice,
   getBinanceBalance,
-  checkExist,
   binance,
 } from "./controllers/TradeController";
+import binanceCoinModel from "./models/binanceCoinModel";
 let timer = null;
+
+const isExist = async (symbol) => {
+  try {
+    const coin = await binanceCoinModel.findOne({ name: `${symbol}BTC` });
+    if (coin) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (e) {
+    console.log(e);
+    return false;
+  }
+};
+
 //새 코인 공지시 코인 구매 진행
 const bidBinance = async (symbol) => {
   if (binance) {
-    if ((await checkExist(symbol, "binance")) === true) {
+    if ((await isExist(symbol)) === true) {
       const { bidPrice, bidQty, askPrice, askQty } = await checkLatestPrice(
         symbol,
         "binance"
@@ -150,7 +165,7 @@ const upbitListing = async () => {
     timer = setTimeout(() => {
       timer = null;
       upbitListing();
-    }, 3000);
+    }, 3500);
   }
 };
 upbitListing();

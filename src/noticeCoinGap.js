@@ -1,4 +1,3 @@
-import axios from "axios";
 import {
   checkBot,
   coinPercent,
@@ -12,21 +11,22 @@ import {
   coinList,
   getPercent,
 } from "./socket";
+import currencyModel from "./models/currencyModel";
 let percent = {};
 let timer = null,
   tickers = [];
 export let usdKrw = 0;
 
 const getCurrency = async () => {
-  const { data, status } = await axios.get(
-    "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
-  );
-  if (status === 200) {
-    usdKrw = data.data.filter((currency) => currency.pair === "KRW_USD").rate;
+  try {
+    const currency = await currencyModel.findOne({ name: "KRW_USD" });
+    usdKrw = currency.value;
+  } catch (error) {
+    console.log(e);
   }
   setTimeout(() => {
     getCurrency();
-  }, 15000);
+  }, 20000);
 };
 const startBot = () => {
   if (
@@ -167,5 +167,5 @@ const startBot = () => {
     }, 1000);
   }
 };
-startBot();
-getCurrency();
+//startBot();
+//getCurrency();
