@@ -1,9 +1,8 @@
 import TelegramBot from "node-telegram-bot-api";
 import dotenv from "dotenv";
 dotenv.config();
-const token = process.env.PRODUCTION
-  ? process.env.TELEGRAM_BOT_API
-  : process.env.LOCAL_TELEGRAM_BOT_API;
+//const token = /*?*/ process.env.TELEGRAM_BOT_API; //process.env.PRODUCTION
+//: process.env.LOCAL_TELEGRAM_BOT_API;
 const upbitToken = process.env.TELEGRAM_UPBIT_BOT_API;
 const binanceToken = process.env.TELEGRAM_BINANCE_BOT_API;
 const groupKey = process.env.GROUP_KEY;
@@ -39,6 +38,7 @@ export const postMessage = (req, res, next) => {
             coinPer[Object.keys(coinPer)[i]];
         }
       }
+      //console.log(coinPercent);
     } else {
       checkBot = false;
       coinPercent = {};
