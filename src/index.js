@@ -22,7 +22,7 @@ dotenv.config();
 const app = express();
 
 app.use(helmet());
-app.use(morgan(process.env.PRODUCTION ? "common" : "dev"));
+//app.use(morgan(process.env.PRODUCTION ? "common" : "dev"));
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
