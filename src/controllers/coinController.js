@@ -100,13 +100,10 @@ export const getCurrency = (req, res, next) => {
     .then((response) => {
       //console.log(response.status);
       if (response.status === 200) {
-        res.json(response.data);
+        return res.json(response.data);
       } else {
-        res.json([]);
+        return res.json([]);
       }
-    })
-    .catch((e) => {
-      console.log(e);
     });
-  res.json([]);
+  return res.json([]);
 };
