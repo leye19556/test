@@ -1,5 +1,4 @@
 import coinModel from "../models/coinModel";
-import axios from "axios";
 
 export const getTickers = async (req, res, next) => {
   try {

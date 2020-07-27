@@ -8,7 +8,6 @@ import socketIO from "socket.io";
 import { localMiddleware } from "./middlewares";
 import globalRoute from "./routes/globalRoute";
 import coinRoute from "./routes/coinRoute";
-//import coinsRoute from "./routes/coinsRoute";
 import botRoute from "./routes/botRoute";
 import adminRoute from "./routes/adminRoute";
 import tradeRoute from "./routes/tradeRoute";
@@ -39,7 +38,6 @@ app.set("views", path.join(__dirname, "views"));
 
 app.use("/", globalRoute);
 app.use("/coin", coinRoute);
-//app.use("/coins", coinsRoute);
 app.use("/bot", botRoute);
 app.use("/trade", tradeRoute);
 app.use("/admin", adminRoute);
