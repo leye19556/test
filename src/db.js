@@ -10,6 +10,7 @@ mongoose.connect(
   {
     useNewUrlParser: true,
     useFindAndModify: false,
+    useUnifiedTopology: true,
   }
 );
 const db = mongoose.connection;
