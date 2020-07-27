@@ -18,10 +18,12 @@ let timer = null,
 export let usdKrw = 0;
 
 const getCurrency = async () => {
-  const { data } = await axios.get(
+  const { data, status } = await axios.get(
     "https://www.binance.com/exchange-api/v1/public/asset-service/product/currency"
   );
-  usdKrw = data.data.filter((currency) => currency.pair === "KRW_USD").rate;
+  if (status === 200) {
+    usdKrw = data.data.filter((currency) => currency.pair === "KRW_USD").rate;
+  }
   setTimeout(() => {
     getCurrency();
   }, 15000);
