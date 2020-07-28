@@ -1,5 +1,6 @@
 import axios from "axios";
 import WebSocket from "ws";
+import socketStream from "socket.io-stream";
 import coinModel from "./models/coinModel";
 export let coinList = [];
 export let tickers1 = {};
@@ -168,7 +169,7 @@ const socket = (io) => {
     socket.emit("welcome");
     getCoinList();
 
-    socket.on("send", () => {
+    socketStream(socket).on("send", (stream, data) => {
       if (coinList.length > 0) {
         let current = ["BTC", ...coinList].map((v) => {
           return {

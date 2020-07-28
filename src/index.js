@@ -2,7 +2,6 @@ import express from "express";
 import path from "path";
 import helmet from "helmet";
 import cors from "cors";
-import morgan from "morgan";
 import dotenv from "dotenv";
 import socketIO from "socket.io";
 import { localMiddleware } from "./middlewares";

@@ -160,12 +160,13 @@ const upbitListing = async () => {
     }
   } catch (e) {
     console.log(e);
-  }
-  if (!timer) {
-    timer = setTimeout(() => {
-      timer = null;
-      upbitListing();
-    }, 3500);
+  } finally {
+    if (!timer) {
+      timer = setTimeout(() => {
+        timer = null;
+        upbitListing();
+      }, 3500);
+    }
   }
 };
 upbitListing();
