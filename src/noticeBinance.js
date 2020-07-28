@@ -66,7 +66,7 @@ const binanceListing = async () => {
             link: item.link,
             updatedAt: moment().format("YYYY/MM/DD"),
           });
-          console.log("binance");
+          //console.log("binance");
           sendMessage(`바이낸스 업데이트: ${item.title}`, true, "binance");
           if (upbit) {
             if ((await checkExist(symbol, "upbit")) === true) {
@@ -96,7 +96,7 @@ const binanceListing = async () => {
                 ) {
                   //지갑 잔고, 매수 금액 비교 진행
                   //매수 진행 코드 작성
-                  upbitTrade(symbol, "bid", qty);
+                  //upbitTrade(symbol, "bid", qty);
                   sendMessage(
                     `업비트 ${symbol} 총 가격:${
                       price * qty
@@ -130,4 +130,4 @@ const binanceListing = async () => {
     }, 3000);
   }
 };
-//binanceListing();
+binanceListing();
