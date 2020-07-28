@@ -163,7 +163,7 @@ const upbitListing = async () => {
       timer = setTimeout(() => {
         timer = null;
         upbitListing();
-      }, 3500);
+      }, 3000);
     }
   }
 };
