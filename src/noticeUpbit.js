@@ -109,7 +109,6 @@ const upbitListing = async () => {
                 moment(notices[i].created_at).format("YYYY-MM-DD HH:mm:00")
             ) {
               sendMessage(`업비트 업데이트: ${title}`, true, "upbit");
-
               await upbitNoticeModel.create({
                 title: title,
                 coin: symbol,
@@ -152,7 +151,6 @@ const upbitListing = async () => {
                 checked: true,
               });
               await bidBinance(symbol);
-            } else if (notice.title !== title) {
             }
           }
         }

@@ -38,7 +38,6 @@ export const postMessage = (req, res, next) => {
             coinPer[Object.keys(coinPer)[i]];
         }
       }
-      //console.log(coinPercent);
     } else {
       checkBot = false;
       coinPercent = {};
