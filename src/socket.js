@@ -169,7 +169,7 @@ const socket = (io) => {
     socket.emit("welcome");
     getCoinList();
 
-    socketStream(socket).on("send", (stream, data) => {
+    socket.on("send", () => {
       if (coinList.length > 0) {
         let current = ["BTC", ...coinList].map((v) => {
           return {
