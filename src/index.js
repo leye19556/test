@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import helmet from "helmet";
 import cors from "cors";
+import morgan from "morgan";
 import dotenv from "dotenv";
 import socketIO from "socket.io";
 import { localMiddleware } from "./middlewares";
@@ -20,7 +21,7 @@ dotenv.config();
 const app = express();
 
 app.use(helmet());
-//app.use(morgan(process.env.PRODUCTION ? "common" : "dev"));
+app.use(morgan("common"));
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -44,5 +45,5 @@ const server = app.listen(process.env.PORT || 3000, () => {
   console.log(`✅ express is running on port:${process.env.PORT || 3000}`);
 });
 
-const socket = socketIO(server);
-socketEvent(socket);
+//const socket = socketIO(server);
+//socketEvent(socket);

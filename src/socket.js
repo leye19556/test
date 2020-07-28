@@ -1,6 +1,5 @@
 import axios from "axios";
 import WebSocket from "ws";
-import socketStream from "socket.io-stream";
 import coinModel from "./models/coinModel";
 export let coinList = [];
 export let tickers1 = {};
@@ -161,6 +160,7 @@ const bithumbWS = async () => {
 
 const socket = (io) => {
   io.set("transports", ["websocket"]);
+  io.set("");
   const connect = io.on("connect", (socket) => {
     //console.log("socket connected");
     socketConnected = true;
@@ -202,7 +202,9 @@ const socket = (io) => {
         socket.emit("failure");
       }
     });
-    socket.emit("receive", () => {});
+    socket.on("error", (error) => {
+      console.log("WebSocket Error:", error);
+    });
     socket.on("disconnect", (reason) => {
       socketConnected = false;
       userList = userList.filter((id) => id !== socket.id);
