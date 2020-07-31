@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import helmet from "helmet";
 import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 import { localMiddleware } from "./middlewares";
 import globalRoute from "./routes/globalRoute";
@@ -12,9 +13,6 @@ import tradeRoute from "./routes/tradeRoute";
 import "./db";
 import "./noticeUpbit";
 import "./noticeBinance";
-import "./noticeCoinGap";
-//import socketIO from "socket.io";
-//import socketEvent from "./socket";
 import "@babel/polyfill";
 dotenv.config();
 const app = express();
@@ -24,6 +22,7 @@ app.use(helmet());
 app.use("/static", express.static(path.join(__dirname, "static")));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(localMiddleware);
 app.use(
   cors({

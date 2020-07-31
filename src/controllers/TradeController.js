@@ -38,8 +38,11 @@ export const checkExist = async (symbol, type) => {
       return true;
     } else {
       const { data } = await axios.get("https://api.upbit.com/v1/market/all");
+      //console.log(data);
       for (let i = 0; i < data.length; i++) {
-        if (data[i].market.includes(`KRW-${symbol}`)) return true;
+        if (data[i].market.includes(`KRW-${symbol}`)) {
+          return true;
+        }
       }
       return false;
     }
@@ -111,25 +114,28 @@ export const postUpbitKey = (req, res, next) => {
 };
 
 export const getUpbitBalance = async () => {
-  const payload = {
-    access_key: UPBIT_API,
-    nonce: v4(),
-  };
-  const token = jsonwebtoken.sign(payload, UPBIT_SEC);
-  const url = "https://api.upbit.com/v1/accounts";
-  const r = await axios.get(url, {
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-  });
-  return r;
+  try {
+    const payload = {
+      access_key: UPBIT_API,
+      nonce: v4(),
+    };
+    const token = jsonwebtoken.sign(payload, UPBIT_SEC);
+    const url = "https://api.upbit.com/v1/accounts";
+    const r = await axios.get(url, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+    return r;
+  } catch (e) {
+    console.log(e);
+  }
 };
 
 export const getBinanceBalance = async () => {
   //binance 지갑 체크
   try {
     const r = await binance.balance();
-    console.log("??");
     return r;
   } catch (e) {
     console.log(e);
@@ -166,7 +172,8 @@ export const checkLatestPrice = async (symbol, from) => {
       obj = await axios(
         `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
       );
-      return obj;
+      g;
+      return obj.data[0];
     } catch (e) {
       console.log(e);
     }
@@ -233,14 +240,6 @@ const checkTradable = async (symbol, type, q) => {
   }
 };
 
-const getUpbitBidPrice = async (symbol) => {
-  const { data } = await axios.get(
-    `https://api.upbit.com/v1/orderbook?markets=KRW-${symbol}`
-  );
-  const info = data[0].orderbook_units[0];
-  return { price: info.bid_price, quantity: info.bid_size };
-};
-
 export const binanceTrade = async (symbol, side, q) => {
   if (side === "ask") {
     //코인 매도
@@ -276,7 +275,7 @@ export const binanceTrade = async (symbol, side, q) => {
   return flag;
 };
 
-export const upbitTrade = async (symbol, side, q) => {
+export const upbitTrade = async (symbol, side, q, price = 0) => {
   let body = {
     market: `KRW-${symbol}`,
     side,
@@ -288,8 +287,7 @@ export const upbitTrade = async (symbol, side, q) => {
     body.ord_type = "market";
   } else if (side === "bid") {
     //buy 매수
-    const bidInfo = await getUpbitBidPrice(symbol);
-    body.price = bidInfo.price * q;
+    body.price = price * q;
     body.volume = null;
     body.ord_type = "price";
   }

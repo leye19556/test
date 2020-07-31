@@ -45,7 +45,7 @@ const bidBinance = async (symbol) => {
         );
         balance = await getBinanceBalance(); //BTC 잔액 확인
         if (
-          //2% 범위에 포함되는지 체크, 총량을 매수가능한지 지갑 체크
+          //3% 범위에 포함되는지 체크, 총량을 매수가능한지 지갑 체크
           parseFloat(price) <= limitPrice &&
           parseFloat(balance.BTC.available) >= price * qty
         ) {
@@ -117,7 +117,7 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              if (title.endsWith(")")) await bidBinance(symbol);
+              //if (title.endsWith(")")) await bidBinance(symbol);
             }
           });
         } else if (
@@ -150,7 +150,7 @@ const upbitListing = async () => {
                 createdAt: notices[i].created_at,
                 checked: true,
               });
-              await bidBinance(symbol);
+              //await bidBinance(symbol);
             }
           }
         }
